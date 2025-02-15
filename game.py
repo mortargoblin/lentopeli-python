@@ -22,7 +22,7 @@ def main(): # MAIN FUNKTIO
     # Tässä esimerkki find_ports() funktion käytöstä
     liike_lista = find_ports(sijainti,kantama,valinnanvara)
     for kentta in liike_lista:
-        print(f"{kentta[0]} | {kentta[1]}  /  {kentta[4]}")
+        print(f"{kentta[0]} | {kentta[1]}  /  {kentta[2]}")
 
 
 
@@ -30,7 +30,7 @@ def main(): # MAIN FUNKTIO
 def find_ports(sij, kant, valvara):
     # Funktio tarvitsee kolme argumenttia: sijainti, kantama, valinnanvara.
     # Funktio palauttaa listan monikkoja:
-    # !! [0]: ident, [1]: nimi, [4]: tyyppi !!
+    # !! [0]: ident, [1]: nimi, [2]: tyyppi !!
 
     # Funktion selitys:
     # Ensimmäiseksi lähtöpaikan sijainti
@@ -38,7 +38,7 @@ def find_ports(sij, kant, valvara):
     kursori.execute(sql)
     sij_deg = kursori.fetchone()
     # Seuraavaksi haetaan tietokannasta KAIKKIEN kenttien allamainitut tiedot.
-    sql = f"SELECT ident, name, latitude_deg, longitude_deg, type FROM airport"
+    sql = f"SELECT ident, name, type, latitude_deg, longitude_deg FROM airport"
     kursori.execute(sql)
     airports = kursori.fetchall()
 
@@ -47,9 +47,9 @@ def find_ports(sij, kant, valvara):
     # Nopeutuu paljon jos poistetaan small_airport tietokannasta
     pool = []
     for airport in airports:
-        paamaara_deg = (airport[2], airport[3])
+        paamaara_deg = (airport[3], airport[4])
         if (distance.distance(sij_deg, paamaara_deg).km < kant and 
-        airport[4] != "small_airport" and airport[0] != sij):
+        airport[2] != "small_airport" and airport[0] != sij):
             # Jos koneen kantama riittää, lisätään kenttä pool-listaan
             pool.append(airport)
     # Seuraavaks valitaan lopulliset kandidaatit sattumanvaraisesti
