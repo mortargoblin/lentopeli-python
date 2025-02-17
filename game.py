@@ -1,7 +1,11 @@
 # LENTO-/RAHTIPELI
+
+# Huom! funktiot tuolla
+import flight_lib
+
+import random
 import mysql.connector
 from geopy import distance
-import random
 
 yhteys = mysql.connector.connect (
     host='127.0.0.1',
@@ -16,7 +20,7 @@ kursori = yhteys.cursor()
 
 def main(): # MAIN FUNKTIO
     sijainti = "EFHK"  # Tämän hetkinen sijainti, lähtöpaikka
-    kantama = 200  # Määrittää miten kauas kone kulkee (km)
+    kantama = 300  # Määrittää miten kauas kone kulkee (km)
     valinnanvara = 3  # Määrittää miten monta kenttää tarjotaan per vuoro
 
     print("Tässä pelin loredump, selitys, avaus, yms")
@@ -24,8 +28,14 @@ def main(): # MAIN FUNKTIO
 
     ### Pelissä liikkumisen while loop tässä
     while True: 
+        try:
+            # Laitoin kartan tähän testausta vatten :)
+            # On hieno
+            print(flight_lib.eu_map_marked(sijainti_deg[1], sijainti_deg[0]))
+        except:
+            pass
         print("Keikat:")
-        liike_lista = find_ports(sijainti,kantama,valinnanvara)
+        liike_lista = flight_lib.find_ports(sijainti,kantama,valinnanvara)
         for kentta in liike_lista:
             print(f"{kentta[0]} | {kentta[1]} / {kentta[2]} / {kentta[3]}")
         
@@ -48,6 +58,7 @@ def main(): # MAIN FUNKTIO
                     if liike_valinta.upper() == liike_lista[i][0]:
                         # Jos pätevä icao-koodi löytyy, sijainti päivitetään
                         sijainti = liike_lista[i][0]
+                        sijainti_deg = (liike_lista[i][4], liike_lista[i][5])
                         print("\nSijainti:", kentta[1])
                         jatkuu = True
                         break
@@ -55,44 +66,6 @@ def main(): # MAIN FUNKTIO
                         print("Väärä komento, kirjoita help saadaksesi ", end="")
                         print("listan komennoista")
 
-        
-
-
-
-def find_ports(sij, kant, valvara):
-    # Funktio tarvitsee kolme argumenttia: sijainti, kantama, valinnanvara.
-    # Funktio palauttaa listan monikkoja:
-    # !! [0]: ident, [1]: nimi, [2]: tyyppi, [3]: iso_country !!
-
-    # Funktion selitys:
-    # Ensimmäiseksi selvitetään lähtöpaikan sijainti
-    sql = f"SELECT latitude_deg, longitude_deg FROM airport where ident = '{sij}'"
-    kursori.execute(sql)
-    sij_deg = kursori.fetchone()
-    # Seuraavaksi haetaan tietokannasta KAIKKIEN kenttien allamerkityt tiedot.
-    sql = f"SELECT ident, name, type, iso_country, latitude_deg, longitude_deg FROM airport"
-    kursori.execute(sql)
-    airports = kursori.fetchall()
-
-    # Tässä for loop käy jokaikisen lentokentän Euroopasta
-    # läpi ja laskee jokaisen kohdalla etäisyyden lähtöpaikasta :DDD
-    # Nopeutuu paljon jos poistetaan small_airport tietokannasta
-    pool = []
-    for airport in airports:
-        paamaara_deg = (airport[4], airport[5])
-        if (distance.distance(sij_deg, paamaara_deg).km < kant and 
-        airport[2] != "small_airport" and airport[0] != sij):
-            # Jos koneen kantama riittää, lisätään kenttä pool-listaan
-            pool.append(airport)
-
-    # Seuraavaksi valitaan lopulliset kandidaatit sattumanvaraisesti
-    # Palautettavien määrän määrittää valinnanvara-muuttuja
-    tulos = []
-    for _ in range(valvara):
-        pool_current = random.choice(pool)
-        pool.remove(pool_current)
-        tulos.append(pool_current)
-    return tulos
     
-
-main()
+if __name__ == "__main__":
+    main()
