@@ -12,7 +12,7 @@ yhteys = mysql.connector.connect (
     port= 3306,
     database='rahtipeli',
     user='pythonuser',  # HUOM käyttäjä: pythonuser
-    password='salainen-sana',  #HUOM salasana
+    password='salainen-sana',  # HUOM salasana
     autocommit=True,
     collation='utf8mb3_general_ci'
     )
@@ -20,20 +20,31 @@ kursori = yhteys.cursor()
 
 def main(): # MAIN FUNKTIO
     sijainti = "EFHK"  # Tämän hetkinen sijainti, lähtöpaikka
+    sijainti_deg = (60.3172, 24.963301) # Tämän hetkiseen sijainnin long, lat
+    sijainti_nimi = "Helsinki-Vantaa Airport"
+
     kantama = 300  # Määrittää miten kauas kone kulkee (km)
-    valinnanvara = 3  # Määrittää miten monta kenttää tarjotaan per vuoro
+    valinnanvara = 5  # Määrittää miten monta kenttää tarjotaan per vuoro
+
+    raha = 10000000000000
 
     print("Tässä pelin loredump, selitys, avaus, yms")
     print("kirjoita help saadaksesi listan komennoista")
+    print("paina enter jataaksesi")
+    input("")
 
     ### Pelissä liikkumisen while loop tässä
     while True: 
         try:
             # Laitoin kartan tähän testausta vatten :)
             # On hieno
-            print(flight_lib.eu_map_marked(sijainti_deg[1], sijainti_deg[0]))
+            print(flight_lib.eu_map_marked(sijainti_deg[1], sijainti_deg[0]), end="")
         except:
             pass
+        print(f"x------------------------------------------------x")
+        print(f"|   Raha:       {str(raha).ljust(32)}€|")
+        print(f"|   Sijainti:   {sijainti_nimi.ljust(33)}|")
+        print(f"x------------------------------------------------x")
         print("Keikat:")
         liike_lista = flight_lib.find_ports(sijainti,kantama,valinnanvara)
         for kentta in liike_lista:
@@ -59,7 +70,7 @@ def main(): # MAIN FUNKTIO
                         # Jos pätevä icao-koodi löytyy, sijainti päivitetään
                         sijainti = liike_lista[i][0]
                         sijainti_deg = (liike_lista[i][4], liike_lista[i][5])
-                        print("\nSijainti:", kentta[1])
+                        sijainti_nimi = liike_lista[i][1]
                         jatkuu = True
                         break
                     elif i+1 == len(liike_lista):
