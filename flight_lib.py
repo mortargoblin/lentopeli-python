@@ -1,4 +1,4 @@
-    ## RAHTIPELI KIRJASTO
+## RAHTIPELI KIRJASTO
 
 import random
 import mysql.connector
@@ -52,8 +52,10 @@ def find_ports(sij, kant, valvara):
 
 
 def eu_map_marked(long, lat): 
-    ### Tämä funktio palauttaa merkkijonon jossa euroopan kartta,
-    ### sekä long ja lat arvojen kohdalla punainen "X"
+    ### Tämä funktio ottaa longitude ja latitude arvot siinä järjestyksessä
+    ### ja palauttaa kartan merkkijonon muodossa, jossa punainen X
+    ### longitude ja latitude arvojen ylimalkaisessa sijainnissa
+
     from termcolor import colored
 
     ### Kartta:
@@ -78,8 +80,7 @@ def eu_map_marked(long, lat):
 .OOOOOOOOO.......O..OOO....OOO...OOOOOOOOOOOOOOOOO
 .OOOOOOOO.............OO....OO....OOO.OO..OOOOOOOO
 ...O......OOOOOO.O..OO....................OOOOOOOO
-..OOOOOOOOOOOOOOOOO.......................OOOOOOOO
-"""
+..OOOOOOOOOOOOOOOOO.......................OOOOOOOO"""
     # Kartan leveys ja korkeus merkkeinä 
     map_width = 50
     map_height = 21
@@ -103,9 +104,9 @@ def eu_map_marked(long, lat):
     max_latitude = 72
 
     ### Normalisoidaan lat ja long kartan koordinaatistoon
-    normalized_longitude = ((airport_coords['longitude'] - min_longitude) / 
+    normalized_longitude = ((airport_coords["longitude"] - min_longitude) / 
                         (max_longitude - min_longitude) * map_width)
-    normalized_latitude = ((airport_coords['latitude'] - min_latitude) / 
+    normalized_latitude = ((airport_coords["latitude"] - min_latitude) / 
                         (max_latitude - min_latitude) * map_height)
     # Tästä saadaan ns "pikseliarvot" sijainnille eli x,y kordinaatit ascii kartasta 
     pixel_position_x = int(normalized_longitude)
@@ -114,23 +115,23 @@ def eu_map_marked(long, lat):
     ### Kirjoitetaan punainen X oikeaan kohtaan kartassa
     updated_map_str = []
     index = map_height
-    # for loop jossa käsitellään jokainen kartan rivi erikseen
+
+    # For loop jossa käsitellään jokainen kartan rivi erikseen
     for line in map_str.split('\n'):
         if pixel_position_x <= len(line):
             updated_line = list(line)
+            # Jos pikselin x ja y arvot täsmäävät, on löydetty äksän sijainti 
             if index == pixel_position_y:
+                # Laitetaan X paikalleen
                 updated_line[pixel_position_x] = colored('X', "red")
-            updated_map_str.append(''.join(updated_line))
+            updated_map_str.append("".join(updated_line))
         else:
             updated_map_str.append(line)
         index -= 1
 
     # Palautetaan X:llä merkitty kartta
-    result = ""
+    tulos = str()
     for line in updated_map_str:
-        result = result + "\n" + line
+        tulos = tulos + line + "\n"
     
-    return result
-
-if __name__ == "__main__":
-    print(eu_map_marked(24.963301, 60.3172))
+    return tulos
