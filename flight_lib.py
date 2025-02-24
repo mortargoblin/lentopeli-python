@@ -56,7 +56,6 @@ def eu_map_marked(long, lat):
     ### ja palauttaa kartan merkkijonon muodossa, jossa punainen X
     ### longitude ja latitude arvojen ylimalkaisessa sijainnissa
 
-    from termcolor import colored
 
     ### Kartta:
     map_str = """
@@ -123,7 +122,7 @@ def eu_map_marked(long, lat):
             # Jos pikselin x ja y arvot täsmäävät, on löydetty äksän sijainti 
             if index == pixel_position_y:
                 # Laitetaan X paikalleen
-                updated_line[pixel_position_x] = colored('X', "red")
+                updated_line[pixel_position_x] = "X"
             updated_map_str.append("".join(updated_line))
         else:
             updated_map_str.append(line)

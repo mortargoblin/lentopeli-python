@@ -52,14 +52,11 @@ def main(): # MAIN FUNKTIO
 |   Raha:       {(str(raha)+'€').ljust(33)}|
 |   Sijainti:   {sijainti["nimi"].ljust(33)}|
 x------------------------------------------------x"""
+        # Tässä kartta. huom: eu_map_marked(long, lat) ottaa long ja lat arvot
+        # argumentteina ja palauttaa kartan merkijonona jossa punainen
+        # X merkitsee long ja lat arvojen ylimalkaisen sijainnin
+        print(flight_lib.eu_map_marked(sijainti["deg"][1], sijainti["deg"][0]), end="")
 
-        try:
-            # Tässä kartta. huom: eu_map_marked(long, lat) ottaa long ja lat arvot
-            # argumentteina ja palauttaa kartan merkijonona jossa punainen
-            # X merkitsee long ja lat arvojen ylimalkaisen sijainnin
-            print(flight_lib.eu_map_marked(sijainti["deg"][1], sijainti["deg"][0]), end="")
-        except:
-            pass
         
         print(stats_prompt)
         print("Keikat:")
