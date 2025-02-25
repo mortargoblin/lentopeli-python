@@ -15,8 +15,8 @@ yhteys = mysql.connector.connect (
     )
 kursori = yhteys.cursor()
 
-def find_ports(sij, kant, valvara):
-    # Funktio tarvitsee kolme argumenttia: sijainti, kantama, valinnanvara.
+def find_ports(sij, kant, valvara, suunta):
+    # Funktio tarvitsee yllämerkityt.
     # Funktio palauttaa listan monikkoja:
     # !! [0]: ident, [1]: nimi, [2]: tyyppi, [3]: iso_country, [4][5]: Lat ja Lon
 
@@ -26,7 +26,7 @@ def find_ports(sij, kant, valvara):
     kursori.execute(sql)
     sij_deg = kursori.fetchone()
     # Seuraavaksi haetaan tietokannasta KAIKKIEN kenttien allamerkityt tiedot.
-    sql = f"SELECT ident, name, type, iso_country, latitude_deg, longitude_deg FROM airport"
+    sql = f"SELECT ident, name, type, iso_country, latitude_deg, longitude_deg FROM airport WHERE NOT type='small_airport'"
     kursori.execute(sql)
     airports = kursori.fetchall()
 
@@ -37,21 +37,36 @@ def find_ports(sij, kant, valvara):
     for airport in airports:
         paamaara_deg = (airport[4], airport[5])
         if (distance.distance(sij_deg, paamaara_deg).km < kant and 
-        airport[2] != "small_airport" and airport[0] != sij):
-            # Jos koneen kantama riittää, lisätään kenttä pool-listaan
-            pool.append(airport)
+        airport[0] != sij):
+            if suunta=="N": #north
+                if paamaara_deg[0] > sij_deg[0]:
+                    pool.append(airport)
+            elif suunta=="W": #west
+                if paamaara_deg[1] < sij_deg[1]:
+                    pool.append(airport)
+            elif suunta=="S": #south
+                if paamaara_deg[0] < sij_deg[0]:
+                    pool.append(airport)
+            elif suunta=="E": #east
+                if paamaara_deg[1] > sij_deg[1]:
+                    pool.append(airport)
+            else:
+                pass
 
     # Seuraavaksi valitaan lopulliset kandidaatit sattumanvaraisesti
     # Palautettavien määrän määrittää valinnanvara-muuttuja
     tulos = []
     for _ in range(valvara):
-        pool_current = random.choice(pool)
-        pool.remove(pool_current)
-        tulos.append(pool_current)
+        try:
+            pool_current = random.choice(pool)
+            pool.remove(pool_current)
+            tulos.append(pool_current)
+        except IndexError:
+            return False
     return tulos
 
 
-def eu_map_marked(long, lat): 
+def eu_map_marked(long, lat, targets = None): 
     ### Tämä funktio ottaa longitude ja latitude arvot siinä järjestyksessä
     ### ja palauttaa kartan merkkijonon muodossa, jossa punainen X
     ### longitude ja latitude arvojen ylimalkaisessa sijainnissa
@@ -59,11 +74,11 @@ def eu_map_marked(long, lat):
 
     ### Kartta:
     map_str = """
-..................................OOOOOOOOOOOOOOOO
-.......................OOOOOOO....OOOOOOOOOOOOOOOO
-...OOO...............OOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-...OOOO.............OOOOOOOOOO..OOOOOOOOOOOOOOOOOO
-...................OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
+x-------x.........................OOOOOOOOOOOOOOOO
+|   N   |..............OOOOOOO....OOOOOOOOOOOOOOOO
+| W + E |............OOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+|   S   |...........OOOOOOOOOO..OOOOOOOOOOOOOOOOOO
+x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
 .................OOOOOO.OOOOOOOOOOOOOOOOOOOOOOOOOO
 ................OOOOOO...OOO.OOOOOOOOOOOOOOOOOOOOO
 ................OOOOOOO....OOOOOOOOOOOOOOOOOOOOOOO
@@ -122,15 +137,34 @@ def eu_map_marked(long, lat):
             # Jos pikselin x ja y arvot täsmäävät, on löydetty äksän sijainti 
             if index == pixel_position_y:
                 # Laitetaan X paikalleen
-                updated_line[pixel_position_x] = f"\033[93mX\033[0m"
+                updated_line[pixel_position_x] = "X"
             updated_map_str.append("".join(updated_line))
         else:
             updated_map_str.append(line)
         index -= 1
 
+    if targets != None:
+        for target in targets:
+            pixel_position_x = int((target[1] - min_longitude) / 
+                    (max_longitude - min_longitude) * map_width)
+            pixel_position_y = int((target[0] - min_latitude) / 
+                    (max_latitude - min_latitude) * map_height)
+            
+            index = map_height
+            for i in range(len(updated_map_str)):
+                if pixel_position_x <= len(updated_map_str[i]):
+                    updated_line = list(updated_map_str[i])
+                    if index==pixel_position_y:
+                        updated_line[pixel_position_x] = "?"
+                    updated_map_str[i] = "".join(updated_line)
+                else:
+                    updated_map_str[i] = updated_line
+                index -= 1
+
     # Palautetaan X:llä merkitty kartta
     tulos = str()
     for line in updated_map_str:
         tulos = tulos + line + "\n"
+        pass
     
     return tulos
