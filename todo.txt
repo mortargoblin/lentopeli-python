@@ -1,3 +1,6 @@
-### todo
+### todo ###
 
 - poista islanti
+- sql lentokoneet/päivitykset
+- rahan tienaaminen
+- random eventit
