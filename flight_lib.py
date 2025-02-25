@@ -122,7 +122,7 @@ def eu_map_marked(long, lat):
             # Jos pikselin x ja y arvot täsmäävät, on löydetty äksän sijainti 
             if index == pixel_position_y:
                 # Laitetaan X paikalleen
-                updated_line[pixel_position_x] = "X"
+                updated_line[pixel_position_x] = f"\033[93mX\033[0m"
             updated_map_str.append("".join(updated_line))
         else:
             updated_map_str.append(line)
