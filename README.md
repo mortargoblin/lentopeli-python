@@ -1,3 +1,6 @@
 # Rahtipeli
 
-# Mariadb
+# Dependencies
+MariaDB
+GeoPy
+
