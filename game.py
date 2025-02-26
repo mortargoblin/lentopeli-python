@@ -47,7 +47,7 @@ while True:
     stats_prompt = f"""x------------------------------------------------x
 |   Raha:       {(str(raha)+'€').ljust(33)}|
 |   Sijainti:   {sijainti["nimi"].ljust(33)}|
-|   Lentokone:  {flight_lib.upgrade_airplane[0]}|
+|   Lentokone:  {flight_lib.upgrade_airplane().ljust(33)}|
 x------------------------------------------------x"""
 
     # Tässä kartta. huom: eu_map_marked(long, lat) ottaa long ja lat arvot

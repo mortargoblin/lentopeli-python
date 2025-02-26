@@ -4,6 +4,7 @@ import random
 import mysql.connector
 from geopy import distance
 
+
 yhteys = mysql.connector.connect (
     host='127.0.0.1',
     port= 3306,
@@ -170,13 +171,13 @@ x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
     return tulos
 
 def upgrade_airplane():
-    lentokone = {
-        "type": "Lilla Damen 22",
-        "kantama": 300,
-        "valinnanvara": 5,
-        "lasti_bonus": 1
-    }
-    return lentokone
+    type = "Lilla Damen 22"
+    kantama = 300
+    kohteet= 5
+    kerroin= 1
+    lentokone = (type, kantama, kohteet, kerroin)
+    return lentokone[0]
+
     #1 Lilla Damen 22
     #2 Stor Dam 23
     #3 Nanny 24
