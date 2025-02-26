@@ -70,6 +70,7 @@ x------------------------------------------------x"""
                 liike_lista_str += f"{kentta[0]} | {kentta[1]} / {kentta[2]} / {kentta[3]} {"\n"}"
 
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
+            print(stats_prompt)
             print("Keikat" + "\n" + liike_lista_str)
             print("Valitse keikka antamalla kohteen ICAO-koodi")
         else:
