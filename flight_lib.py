@@ -168,3 +168,18 @@ x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
         pass
     
     return tulos
+
+def upgrade_airplane():
+    lentokone = {
+        "type": "Lilla Damen 22",
+        "kantama": 300,
+        "valinnanvara": 5,
+        "lasti_bonus": 1
+    }
+    return lentokone
+    #1 Lilla Damen 22
+    #2 Stor Dam 23
+    #3 Nanny 24
+    #4 Mamma Birgitta 25
+    #if Nanny 24 And somtihing else bath to Lokheed BalckBird
+
