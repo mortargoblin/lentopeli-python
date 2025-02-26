@@ -161,14 +161,19 @@ x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
                 else:
                     updated_map_str[i] = updated_line
                 index -= 1
-
     # Palautetaan X:llä merkitty kartta
     tulos = str()
-    for line in updated_map_str:
-        tulos = tulos + line + "\n"
-        pass
-    
-    return tulos
+    if targets == None:
+        for line in updated_map_str:
+            tulos = tulos + line + "\n"
+            pass
+        return tulos
+    if targets != None:
+        for i in range(len(updated_map_str)):
+            # Laastari bugille tässä
+            if i != 0:
+                tulos = tulos + updated_map_str[i] + "\n"
+        return tulos
 
 def upgrade_airplane():
     type = "Lilla Damen 22"
