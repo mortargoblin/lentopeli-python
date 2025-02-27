@@ -32,7 +32,8 @@ sijainti = {
 kantama = 300  # Määrittää miten kauas kone kulkee (km)
 valinnanvara = 5  # Määrittää miten monta kenttää tarjotaan per vuoro
 
-raha = 10000000000000 #rahaa
+#importtaa flight raha yksikön
+raha = flight_lib.raha["Rahaa"]
 
 # Pelin aloitus
 print("Tässä pelin loredump, selitys, avaus, yms")
@@ -41,6 +42,8 @@ print("kirjoita help saadaksesi listan komennoista kun peli on alkanut")
 input("paina [ENTER] jataaksesi")
 
 suunta_valittu = False
+
+
 ### Pelin "main" loop tässä
 while True: 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
@@ -102,7 +105,7 @@ x------------------------------------------------x"""
 
         # Tässä show komento, joka näyttää lentokentän sijainnin kartalla
         elif komento.upper() == "PÄIVITÄ":
-            print(flight_lib.upgrade_airplane())
+            print(flight_lib.upgrade_airplane(raha))
 
         elif komento_args[0].upper() == "SHOW":
             show_ident = komento_args[1]
@@ -146,5 +149,3 @@ x------------------------------------------------x"""
                 elif i+1 == len(liike_lista):
                     print("Väärä komento, kirjoita help saadaksesi ", end="")
                     print("listan komennoista")
-
-#|   Lentokone:  {flight_lib.upgrade_airplane().ljust(33)}|

@@ -4,6 +4,7 @@ import random
 import mysql.connector
 from geopy import distance
 
+
 yhteys = mysql.connector.connect (
     host='127.0.0.1',
     port= 3306,
@@ -174,33 +175,35 @@ x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
                 tulos = tulos + updated_map_str[i] + "\n"
         return tulos
 
-def upgrade_airplane():
+#Rahan määrä käyttäjällä
+raha = {"Rahaa": 1000000000}
 
-    lentokone1 = {"type" : "Lilla Damen 22",
-                  "kantama" : 700,
-                  "kohteet" : 5,
-                  "kerroin" : 1
-                  }
-
-    print("Haluatko päivittää lentokonetta tai sen osia K/E?")
-    paivitys = input(">>>")
-    if paivitys == "K":
-        print("Koneet ja niiden ominaisuudet.")
-        koneet = f"""x-----------------------------------------------------------------------------------x
+#Päivitykset, kesken!!!!!
+def upgrade_airplane(raha):
+        lentokone_di = {"Tyyppi": "Lilla Damen 22", "Kantama": 300, "Kerroin": 1, "Hinta": 2000000}
+        print("Haluatko päivittää lentokonetta tai sen osia K/E?")
+        paivitys = input(">")
+        if paivitys.upper() == "K":
+            print("Koneet ja niiden ominaisuudet.")
+            koneet = f"""x-----------------------------------------------------------------------------------x
 |   1. Kone = Tyyppi: Stor Dam 23 / Kantama: 700 / Kerroin: 1.25 / hinta 20000000 € |
 |   2. Kone = Tyyppi: Nanny 24 / Kantama: 1400 / Kerroin: 1.6 / hinta 200000000 €   |
 |   3. Kone = Tyyppi: Mamma Birgitta 25 / Kantama: 2000 / kerroin: 2.0 500000000 €  |
 x-----------------------------------------------------------------------------------x"""
-
-        return koneet
-    #1 Lilla Damen 22
-    #2 Stor Dam 23
-    #3 Nanny 24
-    #4 Mamma Birgitta 25
-    #if Nanny 24 And somtihing else bath to Lokheed BalckBird
-
-#koneet = f"""x------------------------------------------------------------------------------x
-  #  |   1. Kone = Tyyppi: Stor Dam 23 / Kantama: 700 / Kerroin: 1.25{64}|
-   # |   2. Kone = Tyyppi: Nanny 24 / Kantama: 1400 / Kerroin: 1.6{64}|
-  #  |   3. Kone = Tyyppi: Mamma Birgitta 25 / Kantama: 2000 / kerroin: 2.0{64}|
-   # x------------------------------------------------------------------------------x"""
+            print(koneet)
+            print(f'Sinulla on rahaa {raha["Rahaa"]} €')
+            print("Valitse haluamasi päivitys numerolla.")
+            valinta = input(">>>")
+            if valinta == "1":
+                if float(raha["Rahaa"]) >= 20000000:
+                    lentokone_di.update({"Tyyppi": "Stor Dam 23", "Kantama": 700, "Kerroin": 1.25, "Hinta": 20000000})
+                    raha.update({"Rahaa" : (raha["Rahaa"] - 20000000)})
+            elif valinta == "2":
+                if float(raha["Rahaa"]) >= 50000000:
+                    lentokone_di.update({"Tyyppi": "Nanny 24", "Kantama": 1400, "Kerroin": 1.6, "Hinta": 50000000})
+                    raha.update({"Rahaa": (raha["Rahaa"] - 50000000)})
+            elif valinta == "3":
+                if float(raha["Rahaa"]) >= 400000000:
+                    lentokone_di.update({"Tyyppi": "Mamma Birgitta", "Kantama": 2000, "Kerroin": 1.9, "Hinta": 400000000})
+                    raha.update({"Rahaa": (raha["Rahaa"] - 400000000)})
+            return
