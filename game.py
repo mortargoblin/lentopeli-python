@@ -47,8 +47,8 @@ while True:
     stats_prompt = f"""x------------------------------------------------x
 |   Raha:       {(str(raha)+'€').ljust(33)}|
 |   Sijainti:   {sijainti["nimi"].ljust(33)}|
-|   Lentokone:  {flight_lib.upgrade_airplane().ljust(33)}|
 x------------------------------------------------x"""
+    #Koneen päivitys kysely
 
     # Tässä kartta. huom: eu_map_marked(long, lat) ottaa long ja lat arvot
     # argumentteina ja palauttaa kartan merkijonona jossa punainen
@@ -95,11 +95,15 @@ x------------------------------------------------x"""
         # Komennot voi olla esim. päivityksiin yms.
         if komento.upper() == "HELP":
             # tähän listätään kaikki komennot, kun ne on keksitty
+            print("Päivitä: Pääset päivittämään konettasi.")
             print("[Q]: Poistu")
             print("SHOW icao: näyttää haluamasi lentokentän sijainnin kartalla. Esim. EDDB")
             print("PROMPT: Näyttää kartan, statsit ja keikat uudestaan")
 
         # Tässä show komento, joka näyttää lentokentän sijainnin kartalla
+        elif komento.upper() == "PÄIVITÄ":
+            print(flight_lib.upgrade_airplane())
+
         elif komento_args[0].upper() == "SHOW":
             show_ident = komento_args[1]
             sql = f"SELECT longitude_deg, latitude_deg, name FROM airport WHERE ident='{show_ident}'"
@@ -142,3 +146,5 @@ x------------------------------------------------x"""
                 elif i+1 == len(liike_lista):
                     print("Väärä komento, kirjoita help saadaksesi ", end="")
                     print("listan komennoista")
+
+#|   Lentokone:  {flight_lib.upgrade_airplane().ljust(33)}|

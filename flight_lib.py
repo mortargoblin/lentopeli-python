@@ -4,7 +4,6 @@ import random
 import mysql.connector
 from geopy import distance
 
-
 yhteys = mysql.connector.connect (
     host='127.0.0.1',
     port= 3306,
@@ -176,16 +175,32 @@ x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
         return tulos
 
 def upgrade_airplane():
-    type = "Lilla Damen 22"
-    kantama = 300
-    kohteet= 5
-    kerroin= 1
-    lentokone = (type, kantama, kohteet, kerroin)
-    return lentokone[0]
 
+    lentokone1 = {"type" : "Lilla Damen 22",
+                  "kantama" : 700,
+                  "kohteet" : 5,
+                  "kerroin" : 1
+                  }
+
+    print("Haluatko päivittää lentokonetta tai sen osia K/E?")
+    paivitys = input(">>>")
+    if paivitys == "K":
+        print("Koneet ja niiden ominaisuudet.")
+        koneet = f"""x-----------------------------------------------------------------------------------x
+|   1. Kone = Tyyppi: Stor Dam 23 / Kantama: 700 / Kerroin: 1.25 / hinta 20000000 € |
+|   2. Kone = Tyyppi: Nanny 24 / Kantama: 1400 / Kerroin: 1.6 / hinta 200000000 €   |
+|   3. Kone = Tyyppi: Mamma Birgitta 25 / Kantama: 2000 / kerroin: 2.0 500000000 €  |
+x-----------------------------------------------------------------------------------x"""
+
+        return koneet
     #1 Lilla Damen 22
     #2 Stor Dam 23
     #3 Nanny 24
     #4 Mamma Birgitta 25
     #if Nanny 24 And somtihing else bath to Lokheed BalckBird
 
+#koneet = f"""x------------------------------------------------------------------------------x
+  #  |   1. Kone = Tyyppi: Stor Dam 23 / Kantama: 700 / Kerroin: 1.25{64}|
+   # |   2. Kone = Tyyppi: Nanny 24 / Kantama: 1400 / Kerroin: 1.6{64}|
+  #  |   3. Kone = Tyyppi: Mamma Birgitta 25 / Kantama: 2000 / kerroin: 2.0{64}|
+   # x------------------------------------------------------------------------------x"""
