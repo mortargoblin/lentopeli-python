@@ -2,6 +2,8 @@
 
 # Huom! funktiot tuolla
 import flight_lib
+from flight_lib import raha, lentokone_di
+
 
 import random
 import mysql.connector
@@ -33,7 +35,7 @@ kantama = 300  # Määrittää miten kauas kone kulkee (km)
 valinnanvara = 5  # Määrittää miten monta kenttää tarjotaan per vuoro
 
 #importtaa flight raha yksikön
-raha = flight_lib.raha["Rahaa"]
+
 
 # Pelin aloitus
 print("Tässä pelin loredump, selitys, avaus, yms")
@@ -48,8 +50,9 @@ suunta_valittu = False
 while True: 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
     stats_prompt = f"""x------------------------------------------------x
-|   Raha:       {(str(raha)+'€').ljust(33)}|
+|   Raha:       {(str(raha["euroa"])+'€').ljust(33)}|
 |   Sijainti:   {sijainti["nimi"].ljust(33)}|
+|   Lentokone:  {lentokone_di["tyyppi"].ljust(33)}|
 x------------------------------------------------x"""
     #Koneen päivitys kysely
 
@@ -105,7 +108,7 @@ x------------------------------------------------x"""
 
         # Tässä show komento, joka näyttää lentokentän sijainnin kartalla
         elif komento.upper() == "PÄIVITÄ":
-            print(flight_lib.upgrade_airplane(raha))
+            print(flight_lib.upgrade_airplane(raha, lentokone_di))
 
         elif komento_args[0].upper() == "SHOW":
             show_ident = komento_args[1]

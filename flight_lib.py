@@ -176,11 +176,12 @@ x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
         return tulos
 
 #Rahan määrä käyttäjällä
-raha = {"Rahaa": 1000000000}
+
+raha = {"euroa": 10000000000}
+lentokone_di = {"tyyppi": "Lilla Damen 22", "kantama": 300, "kerroin": 1, "hinta": 2000000}
 
 #Päivitykset, kesken!!!!!
-def upgrade_airplane(raha):
-        lentokone_di = {"Tyyppi": "Lilla Damen 22", "Kantama": 300, "Kerroin": 1, "Hinta": 2000000}
+def upgrade_airplane(raha, lentokone_di):
         print("Haluatko päivittää lentokonetta tai sen osia K/E?")
         paivitys = input(">")
         if paivitys.upper() == "K":
@@ -191,19 +192,47 @@ def upgrade_airplane(raha):
 |   3. Kone = Tyyppi: Mamma Birgitta 25 / Kantama: 2000 / kerroin: 2.0 500000000 €  |
 x-----------------------------------------------------------------------------------x"""
             print(koneet)
-            print(f'Sinulla on rahaa {raha["Rahaa"]} €')
+            print(f'Sinulla on rahaa {str(raha["euroa"])} €')
             print("Valitse haluamasi päivitys numerolla.")
             valinta = input(">>>")
+
+            #Päivittää Stor Dam 23
             if valinta == "1":
-                if float(raha["Rahaa"]) >= 20000000:
-                    lentokone_di.update({"Tyyppi": "Stor Dam 23", "Kantama": 700, "Kerroin": 1.25, "Hinta": 20000000})
-                    raha.update({"Rahaa" : (raha["Rahaa"] - 20000000)})
+                if lentokone_di["tyyppi"] == "Stor Dam 23":
+                    print("Sinulla on jo tämä kone!")
+                else:
+                    if raha["euroa"] >= 20000000:
+                        lentokone_di.update({"tyyppi": "Stor Dam 23", "kantama": 700, "kerroin": 1.25, "hinta": 20000000})
+                        raha.update({"euroa" : (float(raha["euroa"]) - 20000000)})
+                        return print("Päivitys onnistui")
+                    else:
+                        print("Rahasi eivät riitä")
+
+            #Päivittää
             elif valinta == "2":
-                if float(raha["Rahaa"]) >= 50000000:
-                    lentokone_di.update({"Tyyppi": "Nanny 24", "Kantama": 1400, "Kerroin": 1.6, "Hinta": 50000000})
-                    raha.update({"Rahaa": (raha["Rahaa"] - 50000000)})
+                if lentokone_di["tyyppi"] == "Nanny 24":
+                    print("Sinulla on jo tämä kone!")
+                else:
+                    if raha["euroa"] >= 500000000:
+                        lentokone_di.update({"tyyppi": "Nanny 24", "kantama": 1400, "kerroin": 1.6, "hinta": 500000000})
+                        raha.update({"euroa": (float(raha["euroa"]) - 500000000)})
+                        return print("Päivitys onnistui")
+                    else:
+                        print("Rahasi eivät riitä")
+
             elif valinta == "3":
-                if float(raha["Rahaa"]) >= 400000000:
-                    lentokone_di.update({"Tyyppi": "Mamma Birgitta", "Kantama": 2000, "Kerroin": 1.9, "Hinta": 400000000})
-                    raha.update({"Rahaa": (raha["Rahaa"] - 400000000)})
+                if lentokone_di["tyyppi"] == "Mamma Birgitta":
+                    print("Sinulla on jo tämä kone!")
+                else:
+                    if raha["euroa"] >= 900000000:
+                        lentokone_di.update({"tyyppi": "Mamma Birgitta", "kantama": 1900, "Kerroin": 1.9, "hinta": 900000000})
+                        raha.update({"euroa": (float(raha["euroa"]) - 900000000)})
+                        return print("Päivitys onnistui")
+                    else:
+                        print("Rahasi eivät riitä")
+        else:
             return
+
+
+
+
