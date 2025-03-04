@@ -27,7 +27,7 @@ kursori = yhteys.cursor()
 # (Helsinki-Vantaa...) tulee käyttää sijainti["nimi"]
 sijainti = {
     "ident": "EFHK", # Tämänhetkinen ICAO-koodi, lähtöpaikka
-    "deg": (60.3172, 24.963301), # Tämänhetkiseen sijainnin long, lat
+    "deg": (60.3172, 24.963301), # Tämänhetkiseen sijainnin lat, long
     "nimi": "Helsinki-Vantaa Airport"
 }
 
@@ -72,8 +72,8 @@ x------------------------------------------------x"""
             target_lista = []
             for kentta in liike_lista:
                 # kentta_stats tallennetaan musitiin uudelleenkäyttöä varten
-                target_lista.append((kentta[4], kentta[5]))
-                liike_lista_str += f"{kentta[0]} | {kentta[1]} / {kentta[2]} / {kentta[3]} {"\n"}"
+                target_lista.append((kentta["lat"], kentta["long"]))
+                liike_lista_str += f"{kentta["ident"]} | {kentta["name"]} / {kentta["type"]} / {kentta["iso_country"]} {"\n"}"
 
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
             print(stats_prompt)
@@ -141,12 +141,12 @@ x------------------------------------------------x"""
             # For loop etsii käyttäjän syöttämää ICAO - koodia vastaavaa 
             # lentokenttää, ja muuttaa sijainnin sen mukaiseksi
             for i in range(len(liike_lista)):
-                if komento.upper() == liike_lista[i][0]:
+                if komento.upper() == liike_lista[i]["ident"]:
                     # Jos pätevä icao-koodi löytyy, sijainti päivitetään
                     sijainti = {
-                        "ident": liike_lista[i][0],
-                        "deg": (liike_lista[i][4], liike_lista[i][5]),
-                        "nimi": liike_lista[i][1]
+                        "ident": liike_lista[i]["ident"],
+                        "deg": (liike_lista[i]["lat"], liike_lista[i]["long"]),
+                        "nimi": liike_lista[i]["name"]
                     }
                     suunta_valittu = False
                     jatkuu = True

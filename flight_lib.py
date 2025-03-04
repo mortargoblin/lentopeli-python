@@ -60,8 +60,16 @@ def find_ports(sij, kant, valvara, suunta):
     for _ in range(valvara):
         try:
             pool_current = random.choice(pool)
-            pool.remove(pool_current)
-            tulos.append(pool_current)
+            pool.remove(pool_current)            
+            tulos.append({
+                "ident": pool_current[0],
+                "name": pool_current[1],
+                "type": pool_current[2],
+                "iso_country": pool_current[3],
+                "lat": pool_current[4],
+                "long": pool_current[5],
+                })
+
         except IndexError:
             return False
     return tulos
@@ -172,7 +180,10 @@ x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
         for i in range(len(updated_map_str)):
             # Laastari bugille tässä
             if i != 0:
-                tulos = tulos + updated_map_str[i] + "\n"
+                try:
+                    tulos = tulos + updated_map_str[i] + "\n"
+                except TypeError as te:
+                    print("")
         return tulos
 
 #Rahan määrä käyttäjällä
