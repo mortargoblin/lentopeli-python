@@ -34,7 +34,7 @@ kantama = 300  # Määrittää miten kauas kone kulkee (km)
 valinnanvara = 5  # Määrittää miten monta kenttää tarjotaan per vuoro
 
 #Rahan määrä käyttäjällä
-raha = 100
+raha = 100000000
 #Lentokoneen lähtötiedot
 lentokone_di = {"tyyppi": "Lilla Damen 22", "kantama": 300, "kerroin": 1, "hinta": 2000000}
 
@@ -135,9 +135,11 @@ x-------------------------------------------------------------------------------
                 valinta = input(">")
 
                 paivitys = flight_lib.upgrade_airplane(raha, valinta, lentokone_di)
-
-                lentokone_di = paivitys[0]
-                raha = paivitys[1]
+                if paivitys == None:
+                    print("Rahat ei riitä :DD")
+                else:
+                    lentokone_di = paivitys[0]
+                    raha = paivitys[1]
                 jatkuu = True
             else:
                 print("Jatka pelaamista!")

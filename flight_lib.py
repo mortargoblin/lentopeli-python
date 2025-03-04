@@ -208,7 +208,6 @@ def upgrade_airplane(raha, valinta, lentokone_di):
                 vahennys = raha - 1500000
                 return paivitys, vahennys
     else:
-        print("Rahasi eivät riitä")
         return None
 
 
