@@ -111,12 +111,15 @@ x------------------------------------------------x"""
             print(flight_lib.upgrade_airplane(raha, lentokone_di))
 
         elif komento_args[0].upper() == "SHOW":
-            show_ident = komento_args[1]
-            sql = f"SELECT longitude_deg, latitude_deg, name FROM airport WHERE ident='{show_ident}'"
-            kursori.execute(sql)
-            show_ident = kursori.fetchone()
-            print(flight_lib.eu_map_marked(show_ident[0], show_ident[1]))
-            print(show_ident[2])
+            if len(komento_args) < 1:
+                show_ident = komento_args[1]
+                sql = f"SELECT longitude_deg, latitude_deg, name FROM airport WHERE ident='{show_ident}'"
+                kursori.execute(sql)
+                show_ident = kursori.fetchone()
+                print(flight_lib.eu_map_marked(show_ident[0], show_ident[1]))
+                print(show_ident[2])
+            else: 
+                print("Komento vaatii kaksi argumenttia")
 
         # Prompt-komento näyttää kartan ja statsit uudestaan
         elif komento.upper() == "PROMPT":
