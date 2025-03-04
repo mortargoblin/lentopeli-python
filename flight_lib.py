@@ -189,20 +189,20 @@ x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
 
 #Päivitykset, kesken!!!!!
 def upgrade_airplane(raha, valinta, lentokone_di):
-    if int(raha) >= 200000:
-        if valinta == "1":
+    if valinta == "1":
+        if raha >= 200000:
             if lentokone_di["tyyppi"] != "Stor Dam 23":
                 arvot = {"tyyppi": "Stor Dam 23", "kantama": 700, "kerroin": 1.4, "hinta": 200000}
                 vahennys = raha - 200000
                 return arvot, vahennys
-    elif int(raha) >= 1000000:
-        if valinta == "2":
+    elif valinta == "2":
+        if raha >= 1000000:
             if lentokone_di["tyyppi"] != "Nanny 24":
                 paivitys = {"tyyppi": "Nanny 24", "kantama": 1400, "kerroin": 1.6, "hinta": 1000000}
                 vahennys = raha - 1000000
                 return paivitys, vahennys
-    elif int(raha) >= 1500000:
-        if valinta == "3":
+    elif valinta == "3":
+        if raha >= 1500000:
             if lentokone_di["tyyppi"] != "Mamma Birgitta 25":
                 paivitys = {"tyyppi": "Mamma Birgitta 25", "kantama": 1700, "kerroin": 2, "hinta": 1500000}
                 vahennys = raha - 1500000

@@ -34,7 +34,7 @@ kantama = 300  # Määrittää miten kauas kone kulkee (km)
 valinnanvara = 5  # Määrittää miten monta kenttää tarjotaan per vuoro
 
 #Rahan määrä käyttäjällä
-raha = 100000000
+raha = 3000000
 #Lentokoneen lähtötiedot
 lentokone_di = {"tyyppi": "Lilla Damen 22", "kantama": 300, "kerroin": 1, "hinta": 2000000}
 
@@ -53,9 +53,9 @@ suunta_valittu = False
 while True: 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
     stats_prompt = f"""x------------------------------------------------x
-|   Raha:       {str(raha).ljust(33)}|
-|   Sijainti:   {sijainti["nimi"].ljust(33)}|
-|   Lentokone:  {lentokone_di["tyyppi"].ljust(33)}|
+|   Raha:       {int(raha)}                  
+|   Sijainti:   {sijainti["nimi"].ljust(33)}
+|   Lentokone:  {lentokone_di["tyyppi"].ljust(33)}
 x------------------------------------------------x"""
     #Koneen päivitys kysely
 
@@ -120,29 +120,25 @@ x------------------------------------------------x"""
 
         #Komento jolla koneen päivitys onnistuu
         elif komento.upper() == "PÄIVITÄ":
-            print("Haluatko päivittää lentokonetta tai sen osia K/E?")
-            paivitys = input(">")
-            if paivitys.upper() == "K":
-                print("Koneet ja niiden ominaisuudet.")
-                koneet = f"""x----------------------------------------------------------------------------------------x
+            print("Koneet ja niiden ominaisuudet.")
+            koneet = f"""x----------------------------------------------------------------------------------------x
 |   1. Kone = Tyyppi: Stor Dam 23 / Kantama: 700 / Kerroin: 1.4 / Hinta: 600000 €        |
 |   2. Kone = Tyyppi: Nanny 24 / Kantama: 1200 / Kerroin: 1.7 / Hinta: 1000000 €         |
 |   3. Kone = Tyyppi: Mamma Birgitta 25 / Kantama: 1600 / kerroin: 2.0 Hinta: 1500000 €  |
 x----------------------------------------------------------------------------------------x"""
-                print(koneet)
-                print(f'Sinulla on rahaa {raha} €')
-                print("Valitse haluamasi päivitys numerolla [1 / 2 / 3].")
-                valinta = input(">")
+            print(koneet)
+            print(f'Sinulla on rahaa {int(raha)} €')
+            print("Valitse haluamasi päivitys numerolla [1 / 2 / 3].")
+            valinta = input(">>>")
 
-                paivitys = flight_lib.upgrade_airplane(raha, valinta, lentokone_di)
-                if paivitys == None:
-                    print("Rahat ei riitä :DD")
-                else:
-                    lentokone_di = paivitys[0]
-                    raha = paivitys[1]
-                jatkuu = True
+            paivitys = flight_lib.upgrade_airplane(raha, valinta, lentokone_di)
+            if paivitys == None:
+                print("Rahat ei riitä :DD")
             else:
-                print("Jatka pelaamista!")
+                lentokone_di = paivitys[0]
+                raha = paivitys[1]
+            jatkuu = True
+
 
 
         # Tässä show komento, joka näyttää lentokentän sijainnin kartalla
