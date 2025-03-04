@@ -4,6 +4,45 @@ import random
 import mysql.connector
 from geopy import distance
 
+
+# Color class tekstin värittelyä varten
+class Color:
+    reset = '\033[0m'
+    bold = '\033[01m'
+    disable = '\033[02m'
+    underline = '\033[04m'
+    reverse = '\033[07m'
+    strikethrough = '\033[09m'
+    invisible = '\033[08m'
+
+    class fg:
+        black = '\033[30m'
+        red = '\033[31m'
+        green = '\033[32m'
+        orange = '\033[33m'
+        blue = '\033[34m'
+        purple = '\033[35m'
+        cyan = '\033[36m'
+        lightgrey = '\033[37m'
+        darkgrey = '\033[90m'
+        lightred = '\033[91m'
+        lightgreen = '\033[92m'
+        yellow = '\033[93m'
+        lightblue = '\033[94m'
+        pink = '\033[95m'
+        lightcyan = '\033[96m'
+
+    class bg:
+        black = '\033[40m'
+        red = '\033[41m'
+        green = '\033[42m'
+        orange = '\033[43m'
+        blue = '\033[44m'
+        purple = '\033[45m'
+        cyan = '\033[46m'
+        lightgrey = '\033[47m'
+
+
 yhteys = mysql.connector.connect (
     host='127.0.0.1',
     port= 3306,
@@ -17,10 +56,9 @@ kursori = yhteys.cursor()
 
 def find_ports(sij, kant, valvara, suunta):
     # Funktio tarvitsee yllämerkityt.
-    # Funktio palauttaa listan monikkoja:
-    # !! [0]: ident, [1]: nimi, [2]: tyyppi, [3]: iso_country, [4][5]: Lat ja Lon
+    # Funktio palauttaa listan sanakirjoja, joissa jokaisessa:
+    # "ident", "name", "type", "iso_country", "lat", "long"
 
-    # Funktion selitys:
     # Ensimmäiseksi selvitetään lähtöpaikan sijainti
     sql = f"SELECT latitude_deg, longitude_deg FROM airport where ident = '{sij}'"
     kursori.execute(sql)
@@ -31,8 +69,7 @@ def find_ports(sij, kant, valvara, suunta):
     airports = kursori.fetchall()
 
     # Tässä for loop käy jokaikisen lentokentän Euroopasta
-    # läpi ja laskee jokaisen kohdalla etäisyyden lähtöpaikasta :DDD
-    # Nopeutuu paljon jos poistetaan small_airport tietokannasta
+    # läpi ja laskee jokaisen kohdalla etäisyyden lähtöpaikasta
     pool = []
     for airport in airports:
         paamaara_deg = (airport[4], airport[5])
@@ -68,8 +105,8 @@ def find_ports(sij, kant, valvara, suunta):
                 "lat": pool_current[4],
                 "long": pool_current[5],
                 })
-
-        except IndexError:
+        except IndexError as ie:
+            print(ie)
             return False
     return tulos
 
@@ -168,23 +205,27 @@ x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
                 else:
                     updated_map_str[i] = updated_line
                 index -= 1
+
+    # Väritetään X:t ja ?:t
+    for line in range(len(updated_map_str)):
+        updated_line = list(updated_map_str[line])
+        for column in range(len(updated_line)):
+            if updated_line[column] == "X":
+                updated_line[column] = f"{Color.fg.red}X{Color.reset}"
+                updated_map_str[line] = "".join(updated_line)
+            elif updated_line[column] == "?":
+                updated_line[column] = f"{Color.fg.yellow}?{Color.reset}"
+                updated_map_str[line] = "".join(updated_line)
+    
     # Palautetaan X:llä merkitty kartta
     tulos = str()
-    if targets == None:
-        for line in updated_map_str:
-            tulos = tulos + line + "\n"
+    for i in range(len(updated_map_str)):
+        if targets != None and i == 0:
+            # Laastari bugiin :(
             pass
-        return tulos
-    if targets != None:
-        for i in range(len(updated_map_str)):
-            # Laastari bugille tässä
-            if i != 0:
-                try:
-                    tulos = tulos + updated_map_str[i] + "\n"
-                except TypeError as te:
-                    print("")
-        return tulos
-
+        else:            
+            tulos += updated_map_str[i] + "\n"
+    return tulos
 
 
 #Päivitykset, kesken!!!!!

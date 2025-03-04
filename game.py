@@ -2,8 +2,7 @@
 
 # Huom! funktiot tuolla
 import flight_lib
-
-
+from flight_lib import Color
 import random
 import mysql.connector
 from geopy import distance
@@ -85,7 +84,7 @@ x------------------------------------------------x"""
                 reward = base_reward + etaisyys_raha
                 kentta["reward"] = reward
 
-                liike_lista_str += f"{kentta["ident"]} | {kentta["name"]} / {int(reward)}€ / {kentta["iso_country"]} {"\n"}"
+                liike_lista_str += f"{kentta["ident"]} | {kentta["name"]} / {Color.fg.yellow}{int(reward)}€{Color.reset} / {kentta["iso_country"]} {"\n"}"
 
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
             print(stats_prompt)
@@ -93,7 +92,8 @@ x------------------------------------------------x"""
             print("Valitse keikka antamalla kohteen ICAO-koodi")
         else:
             suunta_valittu = False
-            print("Suunnassa ei riittävästi lentokenttiä. Valitse toinen suunta")
+            print("Suunnassa ei riittävästi lentokenttiä.")
+            input("Paina Enter jatkaaksesi")
             jatkuu = True
     
     while jatkuu == False:
@@ -135,23 +135,23 @@ x-------------------------------------------------------------------------------
             if paivitys == None:
                 print("Rahat ei riitä :DD")
             else:
-                lentokone_di = paivitys[0]
-                raha = paivitys[1]
+                lentokone_di, raha = paivitys[0], paivitys[1]
             jatkuu = True
-
-
 
         # Tässä show komento, joka näyttää lentokentän sijainnin kartalla
         elif komento_args[0].upper() == "SHOW":
-            if len(komento_args) < 1:
+            if len(komento_args) == 2:
                 show_ident = komento_args[1]
                 sql = f"SELECT longitude_deg, latitude_deg, name FROM airport WHERE ident='{show_ident}'"
                 kursori.execute(sql)
                 show_ident = kursori.fetchone()
-                print(flight_lib.eu_map_marked(show_ident[0], show_ident[1]))
-                print(show_ident[2])
+                try:
+                    print(flight_lib.eu_map_marked(show_ident[0], show_ident[1]))
+                    print("Näytillä:",show_ident[2])
+                except TypeError:
+                    print("ICAO-koodilla ei löytynyt mitään")
             else: 
-                print("Komento vaatii kaksi argumenttia")
+                print("Komento vaatii kaksi argumenttia. Esimerkiksi: show eddb")
 
         # Prompt-komento näyttää kartan ja statsit uudestaan
         elif komento.upper() == "PROMPT":

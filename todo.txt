@@ -2,5 +2,6 @@
 
 - poista islanti
 - sql lentokoneet/päivitykset
-- rahan tienaaminen
+- rahan tienaaminen - parantelu
 - random eventit
+- jo valmiiksi käytyihin lentokenttiin debuff 
