@@ -73,7 +73,16 @@ x------------------------------------------------x"""
             for kentta in liike_lista:
                 # kentta_stats tallennetaan musitiin uudelleenkäyttöä varten
                 target_lista.append((kentta["lat"], kentta["long"]))
-                liike_lista_str += f"{kentta["ident"]} | {kentta["name"]} / {kentta["type"]} / {kentta["iso_country"]} {"\n"}"
+                if kentta["type"]=="medium_airport":
+                    base_reward = 1000
+                if kentta["type"]=="large_airport":
+                    base_reward = 1500
+                etaisyys = distance.distance(sijainti["deg"],(kentta["lat"],kentta["long"])).km
+                etaisyys_raha = etaisyys * 1.5
+                reward = base_reward + etaisyys_raha
+                kentta["reward"] = reward
+
+                liike_lista_str += f"{kentta["ident"]} | {kentta["name"]} / {int(reward)}€ / {kentta["iso_country"]} {"\n"}"
 
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
             print(stats_prompt)
@@ -148,6 +157,7 @@ x------------------------------------------------x"""
                         "deg": (liike_lista[i]["lat"], liike_lista[i]["long"]),
                         "nimi": liike_lista[i]["name"]
                     }
+                    raha += liike_lista[i]["reward"]
                     suunta_valittu = False
                     jatkuu = True
                     break
