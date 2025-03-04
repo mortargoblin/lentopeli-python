@@ -4,7 +4,6 @@ import random
 import mysql.connector
 from geopy import distance
 
-
 yhteys = mysql.connector.connect (
     host='127.0.0.1',
     port= 3306,
@@ -189,43 +188,29 @@ x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
 
 
 #Päivitykset, kesken!!!!!
-def upgrade_airplane(raha, lentokone_di, valinta):
+def upgrade_airplane(raha, valinta, lentokone_di):
+    if int(raha) >= 200000:
+        if valinta == "1":
+            if lentokone_di["tyyppi"] != "Stor Dam 23":
+                arvot = {"tyyppi": "Stor Dam 23", "kantama": 700, "kerroin": 1.4, "hinta": 200000}
+                vahennys = raha - 200000
+                return arvot, vahennys
+    elif int(raha) >= 1000000:
+        if valinta == "2":
+            if lentokone_di["tyyppi"] != "Nanny 24":
+                paivitys = {"tyyppi": "Nanny 24", "kantama": 1400, "kerroin": 1.6, "hinta": 1000000}
+                vahennys = raha - 1000000
+                return paivitys, vahennys
+    elif int(raha) >= 1500000:
+        if valinta == "3":
+            if lentokone_di["tyyppi"] != "Mamma Birgitta 25":
+                paivitys = {"tyyppi": "Mamma Birgitta 25", "kantama": 1700, "kerroin": 2, "hinta": 1500000}
+                vahennys = raha - 1500000
+                return paivitys, vahennys
+    else:
+        print("Rahasi eivät riitä")
+        return None
 
-
-            if valinta == 1:
-                if lentokone_di["tyyppi"] == "Stor Dam 23":
-                    print("Sinulla on jo tämä kone!")
-                else:
-                    if raha["euroa"] >= 20000000:
-                        lentokone_di.update({"tyyppi": "Stor Dam 23", "kantama": 700, "kerroin": 1.25, "hinta": 200000})
-                        raha.update({"euroa" : (float(raha["euroa"]) - 20000000)})
-                    else:
-                        print("Rahasi eivät riitä")
-
-            #Päivittää
-            elif valinta == "2":
-                if lentokone_di["tyyppi"] == "Nanny 24":
-                    print("Sinulla on jo tämä kone!")
-                else:
-                    if raha["euroa"] >= 500000000:
-                        lentokone_di.update({"tyyppi": "Nanny 24", "kantama": 1400, "kerroin": 1.6, "hinta": 500000000})
-                        raha.update({"euroa": (float(raha["euroa"]) - 500000000)})
-                        print("Päivitys onnistui")
-                    else:
-                        print("Rahasi eivät riitä")
-
-            elif valinta == "3":
-                if lentokone_di["tyyppi"] == "Mamma Birgitta":
-                    print("Sinulla on jo tämä kone!")
-                else:
-                    if raha["euroa"] >= 900000000:
-                        lentokone_di.update({"tyyppi": "Mamma Birgitta", "kantama": 1900, "Kerroin": 1.9, "hinta": 900000000})
-                        raha.update({"euroa": (float(raha["euroa"]) - 900000000)})
-                        print("Päivitys onnistui")
-                    else:
-                        print("Rahasi eivät riitä")
-
-            return None
 
 
 

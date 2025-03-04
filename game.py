@@ -34,11 +34,10 @@ kantama = 300  # Määrittää miten kauas kone kulkee (km)
 valinnanvara = 5  # Määrittää miten monta kenttää tarjotaan per vuoro
 
 #Rahan määrä käyttäjällä
-raha = {"euroa": 10000000000}
+raha = 100
 #Lentokoneen lähtötiedot
 lentokone_di = {"tyyppi": "Lilla Damen 22", "kantama": 300, "kerroin": 1, "hinta": 2000000}
 
-#importtaa flight raha yksikön
 
 
 # Pelin aloitus
@@ -54,7 +53,7 @@ suunta_valittu = False
 while True: 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
     stats_prompt = f"""x------------------------------------------------x
-|   Raha:       {(str(raha["euroa"])+'€').ljust(33)}|
+|   Raha:       {str(raha).ljust(33)}|
 |   Sijainti:   {sijainti["nimi"].ljust(33)}|
 |   Lentokone:  {lentokone_di["tyyppi"].ljust(33)}|
 x------------------------------------------------x"""
@@ -131,16 +130,18 @@ x------------------------------------------------x"""
 |   3. Kone = Tyyppi: Mamma Birgitta 25 / Kantama: 1600 / kerroin: 2.0 Hinta: 1500000 €  |
 x----------------------------------------------------------------------------------------x"""
                 print(koneet)
-                print(f'Sinulla on rahaa {str(raha["euroa"])} €')
+                print(f'Sinulla on rahaa {raha} €')
                 print("Valitse haluamasi päivitys numerolla [1 / 2 / 3].")
-                valinta = input(">>>")
-                if valinta == 1 and not lentokone_di["tyyppi"] == "Stor Dam 23":
-                    paivitys = flight_lib.upgrade_airplane(raha, lentokone_di, valinta)
-                    raha = paivitys[0]
+                valinta = input(">")
 
+                paivitys = flight_lib.upgrade_airplane(raha, valinta, lentokone_di)
 
-                else:
-                    print("Jatka tavaran toimitusta.")
+                lentokone_di = paivitys[0]
+                raha = paivitys[1]
+                jatkuu = True
+            else:
+                print("Jatka pelaamista!")
+
 
         # Tässä show komento, joka näyttää lentokentän sijainnin kartalla
         elif komento_args[0].upper() == "SHOW":
