@@ -2,7 +2,6 @@
 
 # Huom! funktiot tuolla
 import flight_lib
-from flight_lib import raha, lentokone_di
 
 
 import random
@@ -33,6 +32,11 @@ sijainti = {
 
 kantama = 300  # Määrittää miten kauas kone kulkee (km)
 valinnanvara = 5  # Määrittää miten monta kenttää tarjotaan per vuoro
+
+#Rahan määrä käyttäjällä
+raha = {"euroa": 10000000000}
+#Lentokoneen lähtötiedot
+lentokone_di = {"tyyppi": "Lilla Damen 22", "kantama": 300, "kerroin": 1, "hinta": 2000000}
 
 #importtaa flight raha yksikön
 
@@ -115,10 +119,30 @@ x------------------------------------------------x"""
             print("SHOW icao: näyttää haluamasi lentokentän sijainnin kartalla. Esim. EDDB")
             print("PROMPT: Näyttää kartan, statsit ja keikat uudestaan")
 
-        # Tässä show komento, joka näyttää lentokentän sijainnin kartalla
+        #Komento jolla koneen päivitys onnistuu
         elif komento.upper() == "PÄIVITÄ":
-            print(flight_lib.upgrade_airplane(raha, lentokone_di))
+            print("Haluatko päivittää lentokonetta tai sen osia K/E?")
+            paivitys = input(">")
+            if paivitys.upper() == "K":
+                print("Koneet ja niiden ominaisuudet.")
+                koneet = f"""x----------------------------------------------------------------------------------------x
+|   1. Kone = Tyyppi: Stor Dam 23 / Kantama: 700 / Kerroin: 1.4 / Hinta: 600000 €        |
+|   2. Kone = Tyyppi: Nanny 24 / Kantama: 1200 / Kerroin: 1.7 / Hinta: 1000000 €         |
+|   3. Kone = Tyyppi: Mamma Birgitta 25 / Kantama: 1600 / kerroin: 2.0 Hinta: 1500000 €  |
+x----------------------------------------------------------------------------------------x"""
+                print(koneet)
+                print(f'Sinulla on rahaa {str(raha["euroa"])} €')
+                print("Valitse haluamasi päivitys numerolla [1 / 2 / 3].")
+                valinta = input(">>>")
+                if valinta == 1 and not lentokone_di["tyyppi"] == "Stor Dam 23":
+                    paivitys = flight_lib.upgrade_airplane(raha, lentokone_di, valinta)
+                    raha = paivitys[0]
 
+
+                else:
+                    print("Jatka tavaran toimitusta.")
+
+        # Tässä show komento, joka näyttää lentokentän sijainnin kartalla
         elif komento_args[0].upper() == "SHOW":
             if len(komento_args) < 1:
                 show_ident = komento_args[1]
