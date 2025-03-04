@@ -53,9 +53,9 @@ suunta_valittu = False
 while True: 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
     stats_prompt = f"""x------------------------------------------------x
-|   Raha:       {int(raha)}                  
-|   Sijainti:   {sijainti["nimi"].ljust(33)}
-|   Lentokone:  {lentokone_di["tyyppi"].ljust(33)}
+|   Raha:       {(str(int(raha))+"€").ljust(33)}|
+|   Sijainti:   {sijainti["nimi"].ljust(33)}|
+|   Lentokone:  {lentokone_di["tyyppi"].ljust(33)}|
 x------------------------------------------------x"""
     #Koneen päivitys kysely
 
