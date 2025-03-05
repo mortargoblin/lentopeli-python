@@ -29,15 +29,15 @@ sijainti = {
     "nimi": "Helsinki-Vantaa Airport"
 }
 
-kantama = 300  # Määrittää miten kauas kone kulkee (km)
-valinnanvara = 5  # Määrittää miten monta kenttää tarjotaan per vuoro
+
 
 #Rahan määrä käyttäjällä
 raha = 3000000
 #Lentokoneen lähtötiedot
 lentokone_di = {"tyyppi": "Lilla Damen 22", "kantama": 300, "kerroin": 1, "hinta": 2000000}
 
-
+kantama = lentokone_di["kantama"]  # Määrittää miten kauas kone kulkee (km)
+valinnanvara = 5  # Määrittää miten monta kenttää tarjotaan per vuoro
 
 # Pelin aloitus
 print("Tässä pelin loredump, selitys, avaus, yms")
@@ -51,11 +51,12 @@ suunta_valittu = False
 ### Pelin "main" loop tässä
 while True: 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
-    stats_prompt = f"""x------------------------------------------------x
-|   Raha:       {(str(int(raha))+"€").ljust(33)}|
-|   Sijainti:   {sijainti["nimi"].ljust(33)}|
-|   Lentokone:  {lentokone_di["tyyppi"].ljust(33)}|
-x------------------------------------------------x"""
+    stats_prompt = f"""x----------------------------------------------------------x
+|   Raha:                 {(str(int(raha))+" €").ljust(33)}|
+|   Sijainti:             {sijainti["nimi"].ljust(33)}|
+|   Lentokone:            {lentokone_di["tyyppi"].ljust(33)}|
+|   Lentokoneen kantama:  {(str(kantama)+" km").ljust(33)}|
+x----------------------------------------------------------x"""
     #Koneen päivitys kysely
 
     # Tässä kartta. huom: eu_map_marked(long, lat) ottaa long ja lat arvot
@@ -76,9 +77,9 @@ x------------------------------------------------x"""
                 # kentta_stats tallennetaan musitiin uudelleenkäyttöä varten
                 target_lista.append((kentta["lat"], kentta["long"]))
                 if kentta["type"]=="medium_airport":
-                    base_reward = 1000
+                    base_reward = 1000 * float(lentokone_di["kerroin"])
                 if kentta["type"]=="large_airport":
-                    base_reward = 1500
+                    base_reward = 1500 * float(lentokone_di["kerroin"])
                 etaisyys = distance.distance(sijainti["deg"],(kentta["lat"],kentta["long"])).km
                 etaisyys_raha = etaisyys * 1.5
                 reward = base_reward + etaisyys_raha
@@ -136,6 +137,7 @@ x-------------------------------------------------------------------------------
                 print("Rahat ei riitä :DD")
             else:
                 lentokone_di, raha = paivitys[0], paivitys[1]
+                kantama = lentokone_di["kantama"]
             jatkuu = True
 
         # Tässä show komento, joka näyttää lentokentän sijainnin kartalla
