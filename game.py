@@ -85,7 +85,7 @@ x------------------------------------------------x"""
                 reward = base_reward + etaisyys_raha
                 kentta["reward"] = reward
 
-                liike_lista_str += f"{kentta["ident"]} | {kentta["name"]} / {Color.fg.yellow}{int(reward)}€{Color.reset} / {kentta["iso_country"]} {"\n"}"
+                liike_lista_str += f"{Color.fg.lightcyan}{kentta["ident"]}{Color.reset} | {kentta["name"]} / {Color.fg.green}{int(reward)}€{Color.reset} / {kentta["iso_country"]} {"\n"}"
 
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
             print(stats_prompt)

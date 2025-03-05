@@ -211,10 +211,10 @@ x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
         updated_line = list(updated_map_str[line])
         for column in range(len(updated_line)):
             if updated_line[column] == "X":
-                updated_line[column] = f"{Color.fg.red}X{Color.reset}"
+                updated_line[column] = f"{Color.fg.blue}X{Color.reset}"
                 updated_map_str[line] = "".join(updated_line)
             elif updated_line[column] == "?":
-                updated_line[column] = f"{Color.fg.yellow}?{Color.reset}"
+                updated_line[column] = f"{Color.fg.lightcyan}?{Color.reset}"
                 updated_map_str[line] = "".join(updated_line)
     
     # Palautetaan X:llä merkitty kartta
