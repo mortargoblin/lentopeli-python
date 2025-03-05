@@ -1,7 +1,0 @@
-### todo ###
-
-- poista islanti
-- sql lentokoneet/päivitykset
-- rahan tienaaminen - parantelu
-- random eventit
-- jo valmiiksi käytyihin lentokenttiin debuff 
