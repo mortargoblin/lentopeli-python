@@ -64,7 +64,8 @@ def find_ports(sij, kant, valvara, suunta):
     kursori.execute(sql)
     sij_deg = kursori.fetchone()
     # Seuraavaksi haetaan tietokannasta KAIKKIEN kenttien allamerkityt tiedot.
-    sql = f"SELECT ident, name, type, iso_country, latitude_deg, longitude_deg FROM airport WHERE NOT type='small_airport'"
+    sql = (f"SELECT ident, name, type, iso_country, latitude_deg,"
+    " longitude_deg FROM airport WHERE NOT type='small_airport'")
     kursori.execute(sql)
     airports = kursori.fetchall()
 
@@ -93,7 +94,7 @@ def find_ports(sij, kant, valvara, suunta):
     # Seuraavaksi valitaan lopulliset kandidaatit sattumanvaraisesti
     # Palautettavien määrän määrittää valinnanvara-muuttuja
     tulos = []
-    for _ in range(valvara):
+    for i in range(valvara):
         try:
             pool_current = random.choice(pool)
             pool.remove(pool_current)            
@@ -103,11 +104,17 @@ def find_ports(sij, kant, valvara, suunta):
                 "type": pool_current[2],
                 "iso_country": pool_current[3],
                 "lat": pool_current[4],
-                "long": pool_current[5],
-                })
+                "long": pool_current[5],})
         except IndexError as ie:
-            print(ie)
-            return False
+            # Jos kenttiä ei ole riittävästi palautetaan False
+            if i + 1 == valvara:
+                return False
+            else:
+                # Kumminkin jos kenttiä on tarpeeksi, mutta ei valinnanvaran
+                # verran, palautetaan vajaa lista. Näin valinnanvarasta ei
+                # tule debuffia.
+                pass
+            
     return tulos
 
 
@@ -233,19 +240,31 @@ def upgrade_airplane(raha, valinta, lentokone_di):
     if valinta == "1":
         if raha >= 200000:
             if lentokone_di["tyyppi"] != "Stor Dam 23":
-                arvot = {"tyyppi": "Stor Dam 23", "kantama": 600, "kerroin": 1.4, "hinta": 200000}
+                arvot = {
+                    "tyyppi": "Stor Dam 23", 
+                    "kantama": 600, 
+                    "kerroin": 1.4, 
+                    "hinta": 200000}
                 vahennys = raha - 200000
                 return arvot, vahennys
     elif valinta == "2":
         if raha >= 1000000:
             if lentokone_di["tyyppi"] != "Nanny 24":
-                paivitys = {"tyyppi": "Nanny 24", "kantama": 1400, "kerroin": 1.6, "hinta": 1000000}
+                paivitys = {
+                    "tyyppi": "Nanny 24", 
+                    "kantama": 1400, 
+                    "kerroin": 1.6, 
+                    "hinta": 1000000}
                 vahennys = raha - 1000000
                 return paivitys, vahennys
     elif valinta == "3":
         if raha >= 1500000:
             if lentokone_di["tyyppi"] != "Mamma Birgitta 25":
-                paivitys = {"tyyppi": "Mamma Birgitta 25", "kantama": 2000, "kerroin": 2, "hinta": 1500000}
+                paivitys = {
+                    "tyyppi": "Mamma Birgitta 25", 
+                    "kantama": 2000, 
+                    "kerroin": 2, 
+                    "hinta": 1500000}
                 vahennys = raha - 1500000
                 return paivitys, vahennys
     else:

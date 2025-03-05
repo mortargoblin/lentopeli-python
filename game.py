@@ -8,13 +8,13 @@ import mysql.connector
 from geopy import distance
 
 yhteys = mysql.connector.connect (
-host='127.0.0.1',
-port= 3306,
-database='rahtipeli',
-user='pythonuser',  # HUOM käyttäjä: pythonuser
-password='salainen-sana',  # HUOM salasana
-autocommit=True,
-collation='utf8mb3_general_ci'
+    host='127.0.0.1',
+    port= 3306,
+    database='rahtipeli',
+    user='pythonuser',  # HUOM käyttäjä: pythonuser
+    password='salainen-sana',  # HUOM salasana
+    autocommit=True,
+    collation='utf8mb3_general_ci'
 )
 kursori = yhteys.cursor()
 
@@ -85,7 +85,9 @@ x------------------------------------------------x"""
                 reward = base_reward + etaisyys_raha
                 kentta["reward"] = reward
 
-                liike_lista_str += f"{Color.fg.lightcyan}{kentta["ident"]}{Color.reset} | {kentta["name"]} / {Color.fg.green}{int(reward)}€{Color.reset} / {kentta["iso_country"]} {"\n"}"
+                liike_lista_str += (f"{Color.fg.lightcyan}{kentta["ident"]}{Color.reset} | "
+                f"{kentta["name"]} / {Color.fg.green}{int(reward)}€{Color.reset} / "
+                f"{kentta["iso_country"]} {"\n"}")
 
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
             print(stats_prompt)
@@ -134,7 +136,7 @@ x-------------------------------------------------------------------------------
 
             paivitys = flight_lib.upgrade_airplane(raha, valinta, lentokone_di)
             if paivitys == None:
-                print("Rahat ei riitä :DD")
+                print("Riittämätön raha")
             else:
                 lentokone_di, raha = paivitys[0], paivitys[1]
                 kantama = lentokone_di["kantama"]
@@ -186,7 +188,7 @@ x-------------------------------------------------------------------------------
                     suunta_valittu = False
                     jatkuu = True
                     break
-                # Jos lentokenttää ei löytynyt eikä komentoa tunnistettu
                 elif i+1 == len(liike_lista):
+                    # Jos lentokenttää ei löytynyt eikä komentoa tunnistettu
                     print("Väärä komento, kirjoita help saadaksesi ", end="")
                     print("listan komennoista")
