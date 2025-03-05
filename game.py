@@ -51,12 +51,12 @@ suunta_valittu = False
 ### Pelin "main" loop tässä
 while True: 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
-    stats_prompt = f"""x----------------------------------------------------------x
-|   Raha:                 {(str(int(raha))+" €").ljust(33)}|
-|   Sijainti:             {sijainti["nimi"].ljust(33)}|
-|   Lentokone:            {lentokone_di["tyyppi"].ljust(33)}|
-|   Lentokoneen kantama:  {(str(kantama)+" km").ljust(33)}|
-x----------------------------------------------------------x"""
+    stats_prompt = f"""x------------------------------------------------x
+|   Raha:       {(str(int(raha))+" €").ljust(33)}|
+|   Sijainti:   {sijainti["nimi"].ljust(33)}|
+|   Lentokone:  {lentokone_di["tyyppi"].ljust(33)}|
+|   kantama:    {(str(kantama)+" km").ljust(33)}|
+x------------------------------------------------x"""
     #Koneen päivitys kysely
 
     # Tässä kartta. huom: eu_map_marked(long, lat) ottaa long ja lat arvot
