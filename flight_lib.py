@@ -261,7 +261,8 @@ def upgrade_airplane(raha, valinta, lentokone_di):
                     "tyyppi": "Stor Dam 23", 
                     "kantama": 600, 
                     "kerroin": 1.4, 
-                    "hinta": 200000}
+                    "hinta": 200000,
+                    "valinnanvara" : 6}
                 vahennys = raha - 200000
                 return arvot, vahennys
     elif valinta == "2":
@@ -271,7 +272,8 @@ def upgrade_airplane(raha, valinta, lentokone_di):
                     "tyyppi": "Nanny 24", 
                     "kantama": 1400, 
                     "kerroin": 1.6, 
-                    "hinta": 1000000}
+                    "hinta": 1000000,
+                    "valinnanvara" : 7}
                 vahennys = raha - 1000000
                 return paivitys, vahennys
     elif valinta == "3":
@@ -281,7 +283,8 @@ def upgrade_airplane(raha, valinta, lentokone_di):
                     "tyyppi": "Mamma Birgitta 25", 
                     "kantama": 2000, 
                     "kerroin": 2, 
-                    "hinta": 1500000}
+                    "hinta": 1500000,
+                    "valinnanvara" : 8}
                 vahennys = raha - 1500000
                 return paivitys, vahennys
     else:

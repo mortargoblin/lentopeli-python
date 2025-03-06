@@ -34,7 +34,7 @@ sijainti = {
 #Rahan määrä käyttäjällä
 raha = 3000000
 #Lentokoneen lähtötiedot
-lentokone_di = {"tyyppi": "Lilla Damen 22", "kantama": 300, "kerroin": 1, "hinta": 2000000}
+lentokone_di = {"tyyppi": "Lilla Damen 22", "kantama": 300, "kerroin": 1, "hinta": 2000000, "valinnanvara" : 5}
 
 kantama = lentokone_di["kantama"]  # Määrittää miten kauas kone kulkee (km)
 valinnanvara = 5  # Määrittää miten monta kenttää tarjotaan per vuoro
@@ -55,7 +55,7 @@ while True:
 |   Raha:       {(str(int(raha))+" €").ljust(33)}|
 |   Sijainti:   {sijainti["nimi"].ljust(33)}|
 |   Lentokone:  {lentokone_di["tyyppi"].ljust(33)}|
-|   kantama:    {(str(kantama)+" km").ljust(33)}|
+|   Kantama:    {(str(kantama)+" km").ljust(33)}|
 x------------------------------------------------x"""
     #Koneen päivitys kysely
 
@@ -140,6 +140,7 @@ x-------------------------------------------------------------------------------
             else:
                 lentokone_di, raha = paivitys[0], paivitys[1]
                 kantama = lentokone_di["kantama"]
+                valinnanvara = lentokone_di["valinnanvara"]
             jatkuu = True
 
         # Tässä show komento, joka näyttää lentokentän sijainnin kartalla
