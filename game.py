@@ -77,17 +77,17 @@ x------------------------------------------------x"""
                 # kentta_stats tallennetaan musitiin uudelleenkäyttöä varten
                 target_lista.append((kentta["lat"], kentta["long"]))
                 if kentta["type"]=="medium_airport":
-                    base_reward = 1000 * float(lentokone_di["kerroin"])
+                    base_reward = 1000
                 if kentta["type"]=="large_airport":
-                    base_reward = 1500 * float(lentokone_di["kerroin"])
+                    base_reward = 1500
                 etaisyys = distance.distance(sijainti["deg"],(kentta["lat"],kentta["long"])).km
                 etaisyys_raha = etaisyys * 1.5
-                reward = base_reward + etaisyys_raha
+                reward = ((base_reward * float(lentokone_di["kerroin"]))  + etaisyys_raha) * random.uniform(0.9,1.1)
                 kentta["reward"] = reward
 
                 liike_lista_str += (f"{Color.fg.lightcyan}{kentta["ident"]}{Color.reset} | "
                 f"{kentta["name"]} / {Color.fg.green}{int(reward)}€{Color.reset} / "
-                f"{kentta["iso_country"]} {"\n"}")
+                f"{int(etaisyys)}km / {kentta["iso_country"]}{"\n"}")
 
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
             print(stats_prompt)
