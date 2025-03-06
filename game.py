@@ -32,7 +32,7 @@ sijainti = {
 
 
 #Rahan määrä käyttäjällä
-raha = 3000000
+raha = 300000
 #Lentokoneen lähtötiedot
 lentokone_di = {"tyyppi": "Lilla Damen 22", "kantama": 300, "kerroin": 1, "hinta": 2000000}
 
@@ -81,8 +81,23 @@ x------------------------------------------------x"""
                 if kentta["type"]=="large_airport":
                     base_reward = 1500
                 etaisyys = distance.distance(sijainti["deg"],(kentta["lat"],kentta["long"])).km
-                etaisyys_raha = etaisyys * 1.5
-                reward = ((base_reward * float(lentokone_di["kerroin"]))  + etaisyys_raha) * random.uniform(0.9,1.1)
+                etaisyys_raha = etaisyys * 2
+
+                country_reward = 1
+
+                match kentta["iso_country"]:
+                    case "RU"|"BY":
+                        country_reward = 0.75
+                    case "FI"|"PL"|"EE"|"HR"|"GR":
+                        country_reward = 0.95
+                    case "SE"|"NO"|"DK"|"FR"|"CH"|"SP":
+                        country_reward = 1.1
+                    case "GB"|"IT"|"AT":
+                        country_reward = 1.05
+                    case "DE"|"LU":
+                        country_reward = 1.2
+
+                reward = ((base_reward * float(lentokone_di["kerroin"]))  + etaisyys_raha) * random.uniform(0.9,1.1) * country_reward
                 kentta["reward"] = reward
 
                 liike_lista_str += (f"{Color.fg.lightcyan}{kentta["ident"]}{Color.reset} | "
