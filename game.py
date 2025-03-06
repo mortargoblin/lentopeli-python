@@ -46,10 +46,16 @@ print("kirjoita help saadaksesi listan komennoista kun peli on alkanut")
 input("paina [ENTER] jataaksesi")
 
 suunta_valittu = False
-
+event = False
 
 ### Pelin "main" loop tässä
-while True: 
+while True:
+    #random-event
+    if event == True:
+        event_outcome = flight_lib.random_event(raha)
+        if event_outcome != None:
+            print(event_outcome[0])
+            raha = event_outcome[1]
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
     stats_prompt = f"""x------------------------------------------------x
 |   Raha:       {(str(int(raha))+" €").ljust(33)}|
@@ -185,6 +191,7 @@ x-------------------------------------------------------------------------------
                         "nimi": liike_lista[i]["name"]
                     }
                     raha += liike_lista[i]["reward"]
+                    event = True
                     suunta_valittu = False
                     jatkuu = True
                     break

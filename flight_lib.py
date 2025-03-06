@@ -271,5 +271,24 @@ def upgrade_airplane(raha, valinta, lentokone_di):
         return None
 
 
+#random eventti
+def random_event(raha):
+    sattuma = random.random()
+
+    if sattuma < 0.5:
+        random_juttu = random.choice(["ryosto", "bonus"])
+        if random_juttu == "ryosto":
+            vahennys = raha - 10000
+            return "ryosto", raha
+        elif random_juttu == "bonus":
+            lisaa = raha + 5000
+            return "bonus", raha
+    return None
+
+
+
+
+
+
 
 
