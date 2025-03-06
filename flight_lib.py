@@ -201,7 +201,6 @@ x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
     if targets != None:
         for target in targets:
             target_id += 1
-            print(target_id)
 
             # Normalisointi
             pixel_position_x = int((target[1] - min_longitude) / 
