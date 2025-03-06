@@ -32,7 +32,7 @@ sijainti = {
 
 
 #Rahan määrä käyttäjällä
-raha = 300000
+raha = 3000000
 #Lentokoneen lähtötiedot
 lentokone_di = {"tyyppi": "Lilla Damen 22", "kantama": 300, "kerroin": 1, "hinta": 2000000}
 
@@ -57,12 +57,12 @@ while True:
             print(event_outcome[0])
             raha = event_outcome[1]
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
-    stats_prompt = f"""x------------------------------------------------x
-|   Raha:       {(str(int(raha))+" €").ljust(33)}|
-|   Sijainti:   {sijainti["nimi"].ljust(33)}|
-|   Lentokone:  {lentokone_di["tyyppi"].ljust(33)}|
-|   kantama:    {(str(kantama)+" km").ljust(33)}|
-x------------------------------------------------x"""
+    stats_prompt = f"""x--------------------------------------------------------x
+|   Raha:       {(str(int(raha))+" €").ljust(41)}|
+|   Sijainti:   {sijainti["nimi"].ljust(41)}|
+|   Lentokone:  {lentokone_di["tyyppi"].ljust(41)}|
+|   kantama:    {(str(kantama)+" km").ljust(41)}|
+x--------------------------------------------------------x"""
     #Koneen päivitys kysely
 
     # Tässä kartta. huom: eu_map_marked(long, lat) ottaa long ja lat arvot
@@ -87,23 +87,8 @@ x------------------------------------------------x"""
                 if kentta["type"]=="large_airport":
                     base_reward = 1500
                 etaisyys = distance.distance(sijainti["deg"],(kentta["lat"],kentta["long"])).km
-                etaisyys_raha = etaisyys * 2
-
-                country_reward = 1
-
-                match kentta["iso_country"]:
-                    case "RU"|"BY":
-                        country_reward = 0.75
-                    case "FI"|"PL"|"EE"|"HR"|"GR":
-                        country_reward = 0.95
-                    case "SE"|"NO"|"DK"|"FR"|"CH"|"SP":
-                        country_reward = 1.1
-                    case "GB"|"IT"|"AT":
-                        country_reward = 1.05
-                    case "DE"|"LU":
-                        country_reward = 1.2
-
-                reward = ((base_reward * float(lentokone_di["kerroin"]))  + etaisyys_raha) * random.uniform(0.9,1.1) * country_reward
+                etaisyys_raha = etaisyys * 1.5
+                reward = ((base_reward * float(lentokone_di["kerroin"]))  + etaisyys_raha) * random.uniform(0.9,1.1)
                 kentta["reward"] = reward
 
                 # Liike_lista

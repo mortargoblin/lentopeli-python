@@ -126,31 +126,62 @@ def eu_map_marked(long, lat, targets = None):
 
 
     ### Kartta:
-    map_str = """
-x-------x.........................OOOOOOOOOOOOOOOO
-|   N   |..............OOOOOOO....OOOOOOOOOOOOOOOO
-| W + E |............OOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-|   S   |...........OOOOOOOOOO..OOOOOOOOOOOOOOOOOO
-x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
-.................OOOOOO.OOOOOOOOOOOOOOOOOOOOOOOOOO
-................OOOOOO...OOO.OOOOOOOOOOOOOOOOOOOOO
-................OOOOOOO....OOOOOOOOOOOOOOOOOOOOOOO
-........OO.........OOO...OOOOOOOOOOOOOOOOOOOOOOOOO
-.....OOO.OO......O..O....OOOOOOOOOOOOOOOOOOOOOOOOO
-.....OO..OOO.....OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO..
-........OOOO..OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO...
-...........OOOOOOOOOOOOOOOOOOOOOOOOOOOO.OOOOOOOO..
-........OOOOOOOOOOOOOOOOOOOOOOOOOOO.OO..OOOOOOOOOO
-.........OOOOOOOOOOOOOOOOOOOOOOOOO..........OOOOOO
-..OOOOO..OOOOOOOOOOOO.OOOOOOOOOOO....OOOOOOOOOOOOO
-..OOOOOOOOOO......OOOO....OOOOOOOO.OOOOOOOOOOOOOOO
-.OOOOOOOOO.......O..OOO....OOO...OOOOOOOOOOOOOOOOO
-.OOOOOOOO.............OO....OO....OOO.OO..OOOOOOOO
-...O......OOOOOO.O..OO....................OOOOOOOO
-..OOOOOOOOOOOOOOOOO.......................OOOOOOOO"""
+#    map_str = """
+#x-------x.........................OOOOOOOOOOOOOOOO
+#|   N   |..............OOOOOOO....OOOOOOOOOOOOOOOO
+#| W + E |............OOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+#|   S   |...........OOOOOOOOOO..OOOOOOOOOOOOOOOOOO
+#x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
+#.................OOOOOO.OOOOOOOOOOOOOOOOOOOOOOOOOO
+#................OOOOOO...OOO.OOOOOOOOOOOOOOOOOOOOO
+#................OOOOOOO....OOOOOOOOOOOOOOOOOOOOOOO
+#........OO.........OOO...OOOOOOOOOOOOOOOOOOOOOOOOO
+#.....OOO.OO......O..O....OOOOOOOOOOOOOOOOOOOOOOOOO
+#.....OO..OOO.....OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO..
+#........OOOO..OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO...
+#...........OOOOOOOOOOOOOOOOOOOOOOOOOOOO.OOOOOOOO..
+#........OOOOOOOOOOOOOOOOOOOOOOOOOOO.OO..OOOOOOOOOO
+#.........OOOOOOOOOOOOOOOOOOOOOOOOO..........OOOOOO
+#..OOOOO..OOOOOOOOOOOO.OOOOOOOOOOO....OOOOOOOOOOOOO
+#..OOOOOOOOOO......OOOO....OOOOOOOO.OOOOOOOOOOOOOOO
+#.OOOOOOOOO.......O..OOO....OOO...OOOOOOOOOOOOOOOOO
+#.OOOOOOOO.............OO....OO....OOO.OO..OOOOOOOO
+#...O......OOOOOO.O..OO....................OOOOOOOO
+#..OOOOOOOOOOOOOOOOO.......................OOOOOOOO"""
+
+    map_str="""x-------x⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⣿⡟⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣗⡀
+|   N   |⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠁⠘⠁⠀⠁⣈⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+| W   E |⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠏⠁⠀⠀⠀⠀⠀⠀⠀⠈⠉⠙⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⢻⣿⣿⣿⣿
+|   S   |⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⣿⣿⣿⣿⡟⠿⣿⣿⣶⣾⠿⠿⢹⣿
+x-------x⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⣿⣿⡇⢠⣼⣿⠛⠁⠀⠀⠀⠀
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⣤⣀⠀⠀⠀⠀⢀⣿⣿⣷⠈⠛⠃⠀⠀⠀⠀⠀⠀
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⠀⢀⣠⣄⡀⠀⠀⠀⠀⠀⠀⠈⢹⣿⣷⣶⣶⠟⠁⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⢸⣿⡟⠻⢿⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠃⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢿⣿⣿⣅⠀⠀⠀⣀⣀⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⠾⠛⠛⠿⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣿⣿⣿⣿⡟⢋⣿⣿⣿⣿⣿⣿⣿⣿⣤⣀⣴⣿⣧⠀⠀⠀⠀⣾⣿⣿⣿⣿⣽⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣿⣿⣿⣿⡂⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⡿⠩⣿⣆⠀⠀⠀⣿⣿⣿⣿⠃⠙⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣿⣿⣿⣿⣷⠀⠈⢻⣿⣿⣿⣿⣿⣿⣿⣿⡀⠰⡟⢫⣀⣶⣾⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣿⠟⠃⢀⣿⣶⡀⠀⠻⣿⣿⣿⣿⣿⣿⣿⡇⠙⠿⠟⢿⡿⠟⠋⠙⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣷⠀⠀⢈⣿⡏⠁⠀⠀⠛⢿⣿⣿⠛⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣧⣤⣶⣿⣿⡤⠄⠀⠀⠀⣾⠿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣄⠀
+⣿⣿⣿⣿⣿⣿⣿⣦⣶⣾⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⣸⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⡟⠛⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⣀⣠⡤⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣦⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⡃⢈⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⣴⣾⣿⣿⣿⣿⣿
+⣿⣿⣿⡿⠿⠿⠿⠿⠿⠿⠀⠀⠀⠀⣀⣀⢀⣤⣶⣦⠀⠘⢻⣿⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⣏⣿⣷⣄⠀⠙⢿⣿⣷⡄⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⠿⠟⠻⠿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠈⢿⣿⣿⣿⣿⣿
+⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⠉⣿⣿⣿⣿⣦⡀⣬⣿⣧⠀⠀⢤⣴⣶⡆⠒⠛⠀⠀⠀⠀⠀⠀⠀⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠙⠛⢿⣿⠟
+⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⢨⣿⣿⣿⣿⣿⣿⣿⣶⣿⣿⣿⠿⠿⣇⣾⣿⣿⣷⠄⢘⣻⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣿⣷⣶⣦⣠⣤⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣿⣿⣿⣿⣿⣷⣼⣿⣿⣿⣷⣤⣀⣤⣄⣀⣤⣤⣤⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣭⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"""
+
     # Kartan leveys ja korkeus merkkeinä 
-    map_width = 50
-    map_height = 21
+    map_width = 58
+    map_height = 29
 
     try:
         airport_coords = {
@@ -164,11 +195,11 @@ x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
     ### Näitä säätämällä kalibroin tekstikartan
     ### oikeiden lat, long arvojen kanssa sopivaksi
     # Longitude
-    min_longitude = -15
-    max_longitude = 60
+    min_longitude = -12
+    max_longitude = 55
     # Latitude
     min_latitude = 35
-    max_latitude = 72
+    max_latitude = 75.4
 
     ### Normalisoidaan lat ja long kartan koordinaatistoon
     normalized_longitude = ((airport_coords["longitude"] - min_longitude) / 
