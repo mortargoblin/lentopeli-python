@@ -99,6 +99,7 @@ def find_ports(sij, kant, valvara, suunta):
             pool_current = random.choice(pool)
             pool.remove(pool_current)            
             tulos.append({
+                "id": i + 1,
                 "ident": pool_current[0],
                 "name": pool_current[1],
                 "type": pool_current[2],
@@ -194,34 +195,45 @@ x-------x..........OOOOO.OOOOOOOOOOOOOOOOOOOOOOOOO
         else:
             updated_map_str.append(line)
         index -= 1
-
+    
+    # Targets
+    target_id = 0
     if targets != None:
         for target in targets:
+            target_id += 1
+            print(target_id)
+
+            # Normalisointi
             pixel_position_x = int((target[1] - min_longitude) / 
                     (max_longitude - min_longitude) * map_width)
             pixel_position_y = int((target[0] - min_latitude) / 
                     (max_latitude - min_latitude) * map_height)
             
+            # Merkkaaminen
             index = map_height
             for i in range(len(updated_map_str)):
                 if pixel_position_x <= len(updated_map_str[i]):
                     updated_line = list(updated_map_str[i])
                     if index==pixel_position_y:
-                        updated_line[pixel_position_x] = "?"
+                        updated_line[pixel_position_x] = str(target_id)
                     updated_map_str[i] = "".join(updated_line)
                 else:
                     updated_map_str[i] = updated_line
                 index -= 1
 
-    # Väritetään X:t ja ?:t
+    # Väritetään X:t ja nro:t
     for line in range(len(updated_map_str)):
         updated_line = list(updated_map_str[line])
         for column in range(len(updated_line)):
             if updated_line[column] == "X":
-                updated_line[column] = f"{Color.fg.blue}X{Color.reset}"
+                # Väritetään X
+                updated_line[column] = (f"{Color.fg.blue}"
+                f"X{Color.reset}")
                 updated_map_str[line] = "".join(updated_line)
-            elif updated_line[column] == "?":
-                updated_line[column] = f"{Color.fg.lightcyan}?{Color.reset}"
+            elif updated_line[column] in "123456789":
+                # Värotetään numerot
+                updated_line[column] = (f"{Color.fg.black}"
+                f"{Color.bg.blue}{updated_line[column]}{Color.reset}")
                 updated_map_str[line] = "".join(updated_line)
     
     # Palautetaan X:llä merkitty kartta

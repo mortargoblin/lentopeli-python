@@ -91,14 +91,15 @@ x------------------------------------------------x"""
                 reward = ((base_reward * float(lentokone_di["kerroin"]))  + etaisyys_raha) * random.uniform(0.9,1.1)
                 kentta["reward"] = reward
 
-                liike_lista_str += (f"{Color.fg.lightcyan}{kentta["ident"]}{Color.reset} | "
-                f"{kentta["name"]} / {Color.fg.green}{int(reward)}€{Color.reset} / "
+                # Liike_lista
+                liike_lista_str += (f"{Color.fg.lightcyan}{kentta["id"]}{Color.reset} | {kentta["ident"]}"
+                f" / {kentta["name"]} / {Color.fg.green}{int(reward)}€{Color.reset} / "
                 f"{int(etaisyys)}km / {kentta["iso_country"]}{"\n"}")
 
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
             print(stats_prompt)
             print("Keikat" + "\n" + liike_lista_str)
-            print("Valitse keikka antamalla kohteen ICAO-koodi")
+            print("Valitse keikka antamalla kohteen numero")
         else:
             suunta_valittu = False
             print("Suunnassa ei riittävästi lentokenttiä.")
@@ -169,6 +170,8 @@ x-------------------------------------------------------------------------------
             print(stats_prompt)
             if suunta_valittu == True:
                 print("Keikat:" + "\n" + liike_lista_str)
+            else:
+                print("Valitse suunta [N/W/S/E]")
 
         # Poistumiskomento
         elif komento.upper() == "Q":
@@ -183,7 +186,7 @@ x-------------------------------------------------------------------------------
             # For loop etsii käyttäjän syöttämää ICAO - koodia vastaavaa 
             # lentokenttää, ja muuttaa sijainnin sen mukaiseksi
             for i in range(len(liike_lista)):
-                if komento.upper() == liike_lista[i]["ident"]:
+                if komento.upper() == str(liike_lista[i]["id"]):
                     # Jos pätevä icao-koodi löytyy, sijainti päivitetään
                     sijainti = {
                         "ident": liike_lista[i]["ident"],
