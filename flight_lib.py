@@ -5,6 +5,7 @@ import mysql.connector
 from geopy import distance
 
 
+
 # Color class tekstin värittelyä varten
 class Color:
     reset = '\033[0m'
@@ -58,14 +59,15 @@ def find_ports(sij, kant, valvara, suunta):
     # Funktio tarvitsee yllämerkityt.
     # Funktio palauttaa listan sanakirjoja, joissa jokaisessa:
     # "ident", "name", "type", "iso_country", "lat", "long"
-
+    #if lentokone_di["tyyppi"] == "Mamma Birgitta":
+        
     # Ensimmäiseksi selvitetään lähtöpaikan sijainti
     sql = f"SELECT latitude_deg, longitude_deg FROM airport where ident = '{sij}'"
     kursori.execute(sql)
     sij_deg = kursori.fetchone()
     # Seuraavaksi haetaan tietokannasta KAIKKIEN kenttien allamerkityt tiedot.
     sql = (f"SELECT ident, name, type, iso_country, latitude_deg,"
-    " longitude_deg FROM airport WHERE NOT type='small_airport'")
+           " longitude_deg FROM airport WHERE NOT type='small_airport'")
     kursori.execute(sql)
     airports = kursori.fetchall()
 

@@ -46,23 +46,17 @@ print("kirjoita help saadaksesi listan komennoista kun peli on alkanut")
 input("paina [ENTER] jataaksesi")
 
 suunta_valittu = False
-event = False
+
 
 ### Pelin "main" loop tässä
-while True:
-    #random-event
-    if event == True:
-        event_outcome = flight_lib.random_event(raha)
-        if event_outcome != None:
-            print(event_outcome[0])
-            raha = event_outcome[1]
+while True: 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
-    stats_prompt = f"""x--------------------------------------------------------x
-|   Raha:       {(str(int(raha))+" €").ljust(41)}|
-|   Sijainti:   {sijainti["nimi"].ljust(41)}|
-|   Lentokone:  {lentokone_di["tyyppi"].ljust(41)}|
-|   kantama:    {(str(kantama)+" km").ljust(41)}|
-x--------------------------------------------------------x"""
+    stats_prompt = f"""x------------------------------------------------x
+|   Raha:       {(str(int(raha))+" €").ljust(33)}|
+|   Sijainti:   {sijainti["nimi"].ljust(33)}|
+|   Lentokone:  {lentokone_di["tyyppi"].ljust(33)}|
+|   kantama:    {(str(kantama)+" km").ljust(33)}|
+x------------------------------------------------x"""
     #Koneen päivitys kysely
 
     # Tässä kartta. huom: eu_map_marked(long, lat) ottaa long ja lat arvot
@@ -91,15 +85,14 @@ x--------------------------------------------------------x"""
                 reward = ((base_reward * float(lentokone_di["kerroin"]))  + etaisyys_raha) * random.uniform(0.9,1.1)
                 kentta["reward"] = reward
 
-                # Liike_lista
-                liike_lista_str += (f"{Color.fg.lightcyan}{kentta["id"]}{Color.reset} | {kentta["ident"]}"
-                f" / {kentta["name"]} / {Color.fg.green}{int(reward)}€{Color.reset} / "
+                liike_lista_str += (f"{Color.fg.lightcyan}{kentta["ident"]}{Color.reset} | "
+                f"{kentta["name"]} / {Color.fg.green}{int(reward)}€{Color.reset} / "
                 f"{int(etaisyys)}km / {kentta["iso_country"]}{"\n"}")
 
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
             print(stats_prompt)
             print("Keikat" + "\n" + liike_lista_str)
-            print("Valitse keikka antamalla kohteen numero")
+            print("Valitse keikka antamalla kohteen ICAO-koodi")
         else:
             suunta_valittu = False
             print("Suunnassa ei riittävästi lentokenttiä.")
@@ -170,8 +163,6 @@ x-------------------------------------------------------------------------------
             print(stats_prompt)
             if suunta_valittu == True:
                 print("Keikat:" + "\n" + liike_lista_str)
-            else:
-                print("Valitse suunta [N/W/S/E]")
 
         # Poistumiskomento
         elif komento.upper() == "Q":
@@ -186,7 +177,7 @@ x-------------------------------------------------------------------------------
             # For loop etsii käyttäjän syöttämää ICAO - koodia vastaavaa 
             # lentokenttää, ja muuttaa sijainnin sen mukaiseksi
             for i in range(len(liike_lista)):
-                if komento.upper() == str(liike_lista[i]["id"]):
+                if komento.upper() == liike_lista[i]["ident"]:
                     # Jos pätevä icao-koodi löytyy, sijainti päivitetään
                     sijainti = {
                         "ident": liike_lista[i]["ident"],
@@ -194,7 +185,6 @@ x-------------------------------------------------------------------------------
                         "nimi": liike_lista[i]["name"]
                     }
                     raha += liike_lista[i]["reward"]
-                    event = True
                     suunta_valittu = False
                     jatkuu = True
                     break
