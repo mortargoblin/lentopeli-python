@@ -35,7 +35,6 @@ sijainti = {
 raha = 3000000
 visited_ident = []
 visited_country = []
-achievement = False
 #Lentokoneen lähtötiedot
 lentokone_di = {"tyyppi": "Lilla Damen 22", "kantama": 300, "kerroin": 1, "hinta": 2000000, "valinnanvara" : 5}
 
@@ -222,14 +221,6 @@ x-------------------------------------------------------------------------------
                         visited_country.append(kentta["iso_country"])
                     else:
                         pass
-
-                    if (len(visited_country) <= 5 and achievement == False):
-                        raha += 500
-                        print("Onneksi olkoon, olet käynyt viidessä maassa ja saat +500€!")
-                        achievement = True
-                    else:
-                        print(visited_country)
-
                     raha += liike_lista[i]["reward"]
                     suunta_valittu = False
                     jatkuu = True
