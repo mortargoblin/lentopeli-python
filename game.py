@@ -57,12 +57,12 @@ suunta_valittu = False
 ### Pelin "main" loop tässä
 while True: 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
-    stats_prompt = f"""x-----------------------------------------------------x---------x
-|   Raha:       {(str(int(raha))+" €").ljust(38)     }|    ^    |
-|   Sijainti:   {sijainti["nimi"].ljust(38)          }|    N    |
-|   Lentokone:  {lentokone_di["tyyppi"].ljust(38)    }|  W + E  |
-|   Kantama:    {(str(kantama)+" km").ljust(38)      }|    S    |
-x-----------------------------------------------------x---------x"""
+    stats_prompt = f"""x---------------------------------------------------------------x---------x
+|   Raha:       {(str(int(raha))+" €").ljust(48)     }|    ^    |
+|   Sijainti:   {sijainti["nimi"].ljust(48)          }|    N    |
+|   Lentokone:  {lentokone_di["tyyppi"].ljust(48)    }|  W + E  |
+|   Kantama:    {(str(kantama)+" km").ljust(48)      }|    S    |
+x---------------------------------------------------------------x---------x"""
     #Koneen päivitys kysely
 
     # Tässä kartta. huom: eu_map_marked(long, lat) ottaa long ja lat arvot
@@ -116,7 +116,7 @@ x-----------------------------------------------------x---------x"""
                 # Liike_lista_str tallennetaan muistiin
                 liike_lista_str += (f"{Color.fg.lightcyan}{kentta["id"]}{Color.reset} | "
                 f"{Color.fg.green}{(str(int(reward)) + "€").ljust(7)}{Color.reset}| {kentta["ident"].ljust(7)}|"
-                f"  {kentta["name"]} - {int(etaisyys)}km - {kentta["iso_country"]}{"\n"}")
+                f"  {kentta["name"].ljust(30)} | {int(etaisyys)}km | {kentta["iso_country"]}{"\n"}")
 
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
             print(stats_prompt)
