@@ -44,12 +44,14 @@ valinnanvara = 5  # Määrittää miten monta kenttää tarjotaan per vuoro
 # Pelin aloitus
 print(flight_lib.StartScreen.picture + "\n")
 print(flight_lib.StartScreen.title)
+print("                Hieno alaotsikko tai jtn tässä")
+print(" ..............................................................." + "\n\n")
+input(" paina [enter]")
 
-
-print("Tässä pelin loredump, selitys, avaus, yms")
-print("..........")
-print("kirjoita help saadaksesi listan komennoista kun peli on alkanut")
-input("paina [ENTER] jataaksesi")
+print(" Tässä pelin loredump, selitys, avaus, yms")
+print(" kirjoita help saadaksesi listan komennoista kun peli on alkanut")
+input(" paina [ENTER]")
+print("")
 
 suunta_valittu = False
 
@@ -161,7 +163,7 @@ x-------------------------------------------------------------------------------
             print(koneet)
             print(f'Sinulla on rahaa {int(raha)} €')
             print("Valitse haluamasi päivitys numerolla [1 / 2 / 3].")
-            valinta = input(">>>")
+            valinta = input("> ")
 
             paivitys = flight_lib.upgrade_airplane(raha, valinta, lentokone_di)
             if paivitys == None:
