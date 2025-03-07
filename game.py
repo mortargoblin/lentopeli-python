@@ -92,7 +92,7 @@ x------------------------------------------------x"""
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
             print(stats_prompt)
             print("Keikat" + "\n" + liike_lista_str)
-            print("Valitse keikka antamalla kohteen ICAO-koodi")
+            print("Valitse keikka antamalla kohteen numero")
         else:
             suunta_valittu = False
             print("Suunnassa ei riittävästi lentokenttiä.")
