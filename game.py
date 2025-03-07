@@ -42,6 +42,10 @@ kantama = lentokone_di["kantama"]  # Määrittää miten kauas kone kulkee (km)
 valinnanvara = 5  # Määrittää miten monta kenttää tarjotaan per vuoro
 
 # Pelin aloitus
+print(flight_lib.StartScreen.picture + "\n")
+print(flight_lib.StartScreen.title)
+
+
 print("Tässä pelin loredump, selitys, avaus, yms")
 print("..........")
 print("kirjoita help saadaksesi listan komennoista kun peli on alkanut")
@@ -53,12 +57,12 @@ suunta_valittu = False
 ### Pelin "main" loop tässä
 while True: 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
-    stats_prompt = f"""x--------------------------------------------------------x
-|   Raha:       {(str(int(raha))+" €").ljust(41)}|
-|   Sijainti:   {sijainti["nimi"].ljust(41)}|
-|   Lentokone:  {lentokone_di["tyyppi"].ljust(41)}|
-|   Kantama:    {(str(kantama)+" km").ljust(41)}|
-x--------------------------------------------------------x"""
+    stats_prompt = f"""x-----------------------------------------------------x---------x
+|   Raha:       {(str(int(raha))+" €").ljust(38)     }|    ^    |
+|   Sijainti:   {sijainti["nimi"].ljust(38)          }|    N    |
+|   Lentokone:  {lentokone_di["tyyppi"].ljust(38)    }|  W + E  |
+|   Kantama:    {(str(kantama)+" km").ljust(38)      }|    S    |
+x-----------------------------------------------------x---------x"""
     #Koneen päivitys kysely
 
     # Tässä kartta. huom: eu_map_marked(long, lat) ottaa long ja lat arvot
@@ -141,13 +145,13 @@ x--------------------------------------------------------x"""
         # Komennot voi olla esim. päivityksiin yms.
         if komento.upper() == "HELP":
             # tähän listätään kaikki komennot, kun ne on keksitty
-            print("Päivitä: Pääset päivittämään konettasi.")
             print("[Q]: Poistu")
             print("SHOW icao: näyttää haluamasi lentokentän sijainnin kartalla. Esim. EDDB")
             print("PROMPT: Näyttää kartan, statsit ja keikat uudestaan")
+            print("UPGRADE: Pääset päivittämään konettasi.")
 
         #Komento jolla koneen päivitys onnistuu
-        elif komento.upper() == "PÄIVITÄ":
+        elif komento.upper() == "UPGRADE":
             print("Koneet ja niiden ominaisuudet.")
             koneet = f"""x----------------------------------------------------------------------------------------x
 |   1. Kone = Tyyppi: Stor Dam 23 / Kantama: 700 / Kerroin: 1.4 / Hinta: 600000 €        |
