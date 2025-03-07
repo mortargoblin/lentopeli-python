@@ -33,6 +33,9 @@ sijainti = {
 
 #Rahan määrä käyttäjällä
 raha = 3000000
+visited_ident = []
+visited_country = []
+achievement = False
 #Lentokoneen lähtötiedot
 lentokone_di = {"tyyppi": "Lilla Damen 22", "kantama": 300, "kerroin": 1, "hinta": 2000000, "valinnanvara" : 5}
 
@@ -77,12 +80,32 @@ x------------------------------------------------x"""
                 # kentta_stats tallennetaan musitiin uudelleenkäyttöä varten
                 target_lista.append((kentta["lat"], kentta["long"]))
                 if kentta["type"]=="medium_airport":
-                    base_reward = 1000
+                    base_reward = 2000
                 if kentta["type"]=="large_airport":
-                    base_reward = 1500
+                    base_reward = 3500
+
                 etaisyys = distance.distance(sijainti["deg"],(kentta["lat"],kentta["long"])).km
-                etaisyys_raha = etaisyys * 1.5
-                reward = ((base_reward * float(lentokone_di["kerroin"]))  + etaisyys_raha) * random.uniform(0.9,1.1)
+                etaisyys_raha = etaisyys * 2
+                bonus = 0
+                country_reward = 1
+                match kentta["iso_country"]:
+                    case "RU"|"BY":
+                        country_reward = 0.75
+                    case "FI"|"PL"|"EE"|"HR"|"GR":
+                        country_reward = 0.95
+                    case "SE"|"NO"|"DK"|"FR"|"CH"|"SP":
+                        country_reward = 1.1
+                    case "GB"|"IT"|"AT":
+                        country_reward = 1.05
+                    case "DE"|"LU":
+                        country_reward = 1.2
+
+                if kentta["ident"] in visited_ident:
+                    base_reward = base_reward / 2
+                else:
+                    pass
+
+                reward = ((base_reward * float(lentokone_di["kerroin"]))  + etaisyys_raha) * random.uniform(0.9,1.1) * country_reward
                 kentta["reward"] = reward
 
                 liike_lista_str += (f"{Color.fg.lightcyan}{kentta["id"]}{Color.reset} | "
@@ -185,6 +208,22 @@ x-------------------------------------------------------------------------------
                         "deg": (liike_lista[i]["lat"], liike_lista[i]["long"]),
                         "nimi": liike_lista[i]["name"]
                     }
+                    if sijainti["ident"] not in visited_ident:
+                        visited_ident.append(sijainti["ident"])
+                    else:
+                        pass
+                    if kentta["iso_country"] not in visited_country:
+                        visited_country.append(kentta["iso_country"])
+                    else:
+                        pass
+
+                    if (len(visited_country) <= 5 and achievement == False):
+                        raha += 500
+                        print("Onneksi olkoon, olet käynyt viidessä maassa ja saat +500€!")
+                        achievement = True
+                    else:
+                        print(visited_country)
+
                     raha += liike_lista[i]["reward"]
                     suunta_valittu = False
                     jatkuu = True
