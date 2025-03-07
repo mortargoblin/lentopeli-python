@@ -85,8 +85,8 @@ x------------------------------------------------x"""
                 reward = ((base_reward * float(lentokone_di["kerroin"]))  + etaisyys_raha) * random.uniform(0.9,1.1)
                 kentta["reward"] = reward
 
-                liike_lista_str += (f"{Color.fg.lightcyan}{kentta["ident"]}{Color.reset} | "
-                f"{kentta["name"]} / {Color.fg.green}{int(reward)}€{Color.reset} / "
+                liike_lista_str += (f"{Color.fg.lightcyan}{kentta["id"]}{Color.reset} | "
+                f"{kentta["ident"]} / {kentta["name"]} / {Color.fg.green}{int(reward)}€{Color.reset} / "
                 f"{int(etaisyys)}km / {kentta["iso_country"]}{"\n"}")
 
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
@@ -178,7 +178,7 @@ x-------------------------------------------------------------------------------
             # For loop etsii käyttäjän syöttämää ICAO - koodia vastaavaa 
             # lentokenttää, ja muuttaa sijainnin sen mukaiseksi
             for i in range(len(liike_lista)):
-                if komento.upper() == liike_lista[i]["ident"]:
+                if komento.upper() == str(liike_lista[i]["id"]):
                     # Jos pätevä icao-koodi löytyy, sijainti päivitetään
                     sijainti = {
                         "ident": liike_lista[i]["ident"],
