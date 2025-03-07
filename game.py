@@ -51,12 +51,12 @@ suunta_valittu = False
 ### Pelin "main" loop tässä
 while True: 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
-    stats_prompt = f"""x------------------------------------------------x
-|   Raha:       {(str(int(raha))+" €").ljust(33)}|
-|   Sijainti:   {sijainti["nimi"].ljust(33)}|
-|   Lentokone:  {lentokone_di["tyyppi"].ljust(33)}|
-|   Kantama:    {(str(kantama)+" km").ljust(33)}|
-x------------------------------------------------x"""
+    stats_prompt = f"""x--------------------------------------------------------x
+|   Raha:       {(str(int(raha))+" €").ljust(41)}|
+|   Sijainti:   {sijainti["nimi"].ljust(41)}|
+|   Lentokone:  {lentokone_di["tyyppi"].ljust(41)}|
+|   Kantama:    {(str(kantama)+" km").ljust(41)}|
+x--------------------------------------------------------x"""
     #Koneen päivitys kysely
 
     # Tässä kartta. huom: eu_map_marked(long, lat) ottaa long ja lat arvot
@@ -73,6 +73,8 @@ x------------------------------------------------x"""
         if liike_lista != False:
             liike_lista_str = ""
             target_lista = []
+            # Liike_lista_str ensimmäiset rivit
+            liike_lista_str = f"   Palkkio   ICAO      Lentokentän nimi      -= KEIKAT =-\n"
             for kentta in liike_lista:
                 # kentta_stats tallennetaan musitiin uudelleenkäyttöä varten
                 target_lista.append((kentta["lat"], kentta["long"]))
@@ -85,13 +87,14 @@ x------------------------------------------------x"""
                 reward = ((base_reward * float(lentokone_di["kerroin"]))  + etaisyys_raha) * random.uniform(0.9,1.1)
                 kentta["reward"] = reward
 
+                # Liike_lista_str tallennetaan muistiin
                 liike_lista_str += (f"{Color.fg.lightcyan}{kentta["id"]}{Color.reset} | "
-                f"{kentta["ident"]} / {kentta["name"]} / {Color.fg.green}{int(reward)}€{Color.reset} / "
-                f"{int(etaisyys)}km / {kentta["iso_country"]}{"\n"}")
+                f"{Color.fg.green}{(str(int(reward)) + "€").ljust(7)}{Color.reset}| {kentta["ident"].ljust(7)}|"
+                f"  {kentta["name"]} - {int(etaisyys)}km - {kentta["iso_country"]}{"\n"}")
 
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
             print(stats_prompt)
-            print("Keikat" + "\n" + liike_lista_str)
+            print(liike_lista_str)
             print("Valitse keikka antamalla kohteen numero")
         else:
             suunta_valittu = False
@@ -160,10 +163,13 @@ x-------------------------------------------------------------------------------
 
         # Prompt-komento näyttää kartan ja statsit uudestaan
         elif komento.upper() == "PROMPT":
-            print(flight_lib.eu_map_marked(sijainti["deg"][1], sijainti["deg"][0]), end="")
+            print(flight_lib.eu_map_marked(sijainti["deg"][1], sijainti["deg"][0], target_lista), end="")
             print(stats_prompt)
             if suunta_valittu == True:
-                print("Keikat:" + "\n" + liike_lista_str)
+                print(liike_lista_str)
+                print("Valitse keikka antamalla kohteen numero")
+            else:
+                print("Valitse suunta [N/W/S/E]")
 
         # Poistumiskomento
         elif komento.upper() == "Q":
@@ -188,6 +194,7 @@ x-------------------------------------------------------------------------------
                     raha += liike_lista[i]["reward"]
                     suunta_valittu = False
                     jatkuu = True
+                    target_lista = None
                     break
                 elif i+1 == len(liike_lista):
                     # Jos lentokenttää ei löytynyt eikä komentoa tunnistettu
