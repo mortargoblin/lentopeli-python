@@ -58,10 +58,10 @@ suunta_valittu = False
 while True: 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
     stats_prompt = f"""x---------------------------------------------------------------x---------x
-|   Raha:       {(str(int(raha))+" €").ljust(48)     }|    ^    |
-|   Sijainti:   {sijainti["nimi"].ljust(48)          }|    N    |
-|   Lentokone:  {lentokone_di["tyyppi"].ljust(48)    }|  W + E  |
-|   Kantama:    {(str(kantama)+" km").ljust(48)      }|    S    |
+|   Raha:       {(str(int(raha))+" €").ljust(48)               }|    ^    |
+|   Sijainti:   {sijainti["nimi"].ljust(48)                    }|    N    |
+|   Lentokone:  {lentokone_di["tyyppi"].ljust(48)              }|  W + E  |
+|   Kantama:    {(str(kantama)+" km").ljust(48)                }|    S    |
 x---------------------------------------------------------------x---------x"""
     #Koneen päivitys kysely
 
