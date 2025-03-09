@@ -29,35 +29,46 @@ sijainti = {
     "nimi": "Helsinki-Vantaa Airport"
 }
 
-
-
 #Rahan määrä käyttäjällä
 raha = 3000000
 visited_ident = []
 visited_country = []
 #Lentokoneen lähtötiedot
-lentokone_di = {"tyyppi": "Lilla Damen 22", "kantama": 300, "kerroin": 1, "hinta": 2000000, "valinnanvara" : 5}
+lentokone_di = {
+    "tyyppi": "Lilla Damen 22", 
+    "kantama": 300, 
+    "kerroin": 1, 
+    "hinta": 2000000, 
+    "valinnanvara" : 4
+    }
 
 kantama = lentokone_di["kantama"]  # Määrittää miten kauas kone kulkee (km)
-valinnanvara = 5  # Määrittää miten monta kenttää tarjotaan per vuoro
+valinnanvara = lentokone_di["valinnanvara"]  # Määrittää miten monta kenttää tarjotaan per vuoro
 
 # Pelin aloitus
 print(flight_lib.StartScreen.picture + "\n")
 print(flight_lib.StartScreen.title)
 print("                Hieno alaotsikko tai jtn tässä")
 print(" ..............................................................." + "\n\n")
-input(" paina [enter]")
+input(" paina [ENTER]")
 
-print(" Tässä pelin loredump, selitys, avaus, yms")
-print(" kirjoita help saadaksesi listan komennoista kun peli on alkanut")
+print("\n\n Tässä pelin loredump, selitys, avaus, yms")
+print(" kirjoita help saadaksesi listan komennoista kun peli on alkanut\n")
 input(" paina [ENTER]")
 print("")
 
 suunta_valittu = False
-
+event = False
 
 ### Pelin "main" loop tässä
 while True: 
+    if event == True:
+        event_outcome = flight_lib.random_event(raha)
+        if event_outcome != None:
+            print(event_outcome[0])
+            input("Paina [ENTER]")
+            raha = event_outcome[1]
+
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
     stats_prompt = f"""x---------------------------------------------------------------x---------x
 |   Raha:       {(str(int(raha))+" €").ljust(48)               }|    ^    |
@@ -125,9 +136,9 @@ x---------------------------------------------------------------x---------x"""
             print(liike_lista_str)
             print("Valitse keikka antamalla kohteen numero")
         else:
-            suunta_valittu = False
             print("Suunnassa ei riittävästi lentokenttiä.")
-            input("Paina Enter jatkaaksesi")
+            input("Paina [ENTER]")
+            suunta_valittu = False
             jatkuu = True
     
     while jatkuu == False:
@@ -229,8 +240,9 @@ x-------------------------------------------------------------------------------
                         pass
                     raha += liike_lista[i]["reward"]
                     suunta_valittu = False
-                    jatkuu = True
                     target_lista = None
+                    event = True
+                    jatkuu = True                    
                     break
                 elif i+1 == len(liike_lista):
                     # Jos lentokenttää ei löytynyt eikä komentoa tunnistettu

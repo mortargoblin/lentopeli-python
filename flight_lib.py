@@ -90,7 +90,6 @@ def find_ports(sij, kant, valvara, suunta):
     # Funktio tarvitsee yllämerkityt.
     # Funktio palauttaa listan sanakirjoja, joissa jokaisessa:
     # "ident", "name", "type", "iso_country", "lat", "long"
-    #if lentokone_di["tyyppi"] == "Mamma Birgitta":
         
     # Ensimmäiseksi selvitetään lähtöpaikan sijainti
     sql = f"SELECT latitude_deg, longitude_deg FROM airport where ident = '{sij}'"
@@ -108,7 +107,7 @@ def find_ports(sij, kant, valvara, suunta):
     for airport in airports:
         paamaara_deg = (airport[4], airport[5])
         if (distance.distance(sij_deg, paamaara_deg).km < kant and 
-        airport[0] != sij):
+        airport[0] != sij and paamaara_deg[1] < 55):
             if suunta=="N": #north
                 if paamaara_deg[0] > sij_deg[0]:
                     pool.append(airport)
@@ -130,7 +129,8 @@ def find_ports(sij, kant, valvara, suunta):
     for i in range(valvara):
         try:
             pool_current = random.choice(pool)
-            pool.remove(pool_current)            
+            pool.remove(pool_current)                #if lentokone_di["tyyppi"] == "Mamma Birgitta":
+
             tulos.append({
                 "id": i + 1,
                 "ident": pool_current[0],
@@ -329,11 +329,14 @@ def random_event(raha):
     if sattuma < 0.5:
         random_juttu = random.choice(["ryosto", "bonus"])
         if random_juttu == "ryosto":
-            vahennys = raha - 10000
-            return "ryosto", raha
+            vahennys = 10000
+            raha -= vahennys
+            print(raha)
+            return f"Kone hajosi, korvauskulut: {vahennys}€", raha
         elif random_juttu == "bonus":
-            lisaa = raha + 5000
-            return "bonus", raha
+            bonus = 10000
+            raha += bonus
+            return f"bonus {bonus}", raha
     return None
 
 
