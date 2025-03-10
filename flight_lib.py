@@ -3,8 +3,8 @@
 import sys
 import random
 import mysql.connector
-import art
-from art import Color
+import flight_art
+from flight_art import Color
 from geopy import distance
 from time import sleep
 
@@ -95,7 +95,7 @@ def eu_map_marked(long, lat, targets = None):
 
 
     ### Kartta:
-    map_str= art.Map.str
+    map_str= flight_art.Map.str
 
     # Kartan leveys ja korkeus merkkeinä 
     map_width = 58
@@ -257,9 +257,11 @@ def clear(ammount = 200):
         sys.stdout.write("\x1b[1A\x1b[2K")
 
 def animaatio():
-    animaatio_str = art.Animation.list
+    print("\n                      ----- Matkalla -----")
+    animaatio_str = flight_art.Animation.list
 
-    for i in range(8):
+    for i in range(13):
         print(animaatio_str[i % len(animaatio_str)])
-        clear(23)
-        sleep(0.15)
+        clear(26)
+        sleep(0.08)
+    clear(28)

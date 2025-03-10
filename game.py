@@ -2,11 +2,22 @@
 
 import random
 from geopy import distance
+import mysql.connector
 
 import flight_lib
-import art
-from art import Color
+import flight_art
+from flight_art import Color
 
+yhteys = mysql.connector.connect (
+    host='127.0.0.1',
+    port= 3306,
+    database='rahtipeli',
+    user='pythonuser',  # HUOM käyttäjä: pythonuser
+    password='salainen-sana',  #HUOM salasana
+    autocommit=True,
+    collation='utf8mb3_general_ci'
+    )
+kursori = yhteys.cursor()
 
 ### Keskeiset muttujat:
 
@@ -37,8 +48,8 @@ valinnanvara = lentokone_di["valinnanvara"]  # Määrittää miten monta kenttä
 
 # Pelin aloitus
 flight_lib.clear()
-print(art.StartScreen.picture + "\n")
-print(art.StartScreen.title)
+print(flight_art.StartScreen.picture + "\n")
+print(flight_art.StartScreen.title)
 
 input(" paina [ENTER]")
 
@@ -254,5 +265,5 @@ x-------------------------------------------------------------------------------
                     break
                 elif i+1 == len(liike_lista):
                     # Jos lentokenttää ei löytynyt eikä komentoa tunnistettu
-                    print("Väärä komento, kirjoita help saadaksesi ", end="")
-                    print("listan komennoista")
+                    print("Komentoa ei tunnistettu, kirjoita help saadaksesi"
+                    "listan komennoista.")
