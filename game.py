@@ -1,10 +1,12 @@
 # LENTO-/RAHTIPELI
 
+import random
+from geopy import distance
+
 import flight_lib
 import art
 from art import Color
-import random
-from geopy import distance
+
 
 ### Keskeiset muttujat:
 
@@ -34,10 +36,10 @@ kantama = lentokone_di["kantama"]  # Määrittää miten kauas kone kulkee (km)
 valinnanvara = lentokone_di["valinnanvara"]  # Määrittää miten monta kenttää tarjotaan per vuoro
 
 # Pelin aloitus
+flight_lib.clear()
 print(art.StartScreen.picture + "\n")
 print(art.StartScreen.title)
-print("                Hieno alaotsikko tai jtn tässä")
-print(" ..............................................................." + "\n\n")
+
 input(" paina [ENTER]")
 
 print("\n\n Tässä pelin loredump, selitys, avaus, yms")
@@ -47,10 +49,13 @@ print("")
 
 suunta_valittu = False
 event = False
-animaatio = True
+animaatio = False
 
 ### Pelin "main" loop tässä
 while True: 
+    # Näytön tyhjentäminen
+    flight_lib.clear()
+
     # Animaatio
     if animaatio == True and suunta_valittu == False:          
         flight_lib.animaatio()
@@ -63,6 +68,7 @@ while True:
             input("Paina [ENTER]")
             print("")
             raha = event_outcome[1]
+            flight_lib.clear()
 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
     stats_prompt = f"""x----------------------------------------------x---------x
@@ -242,6 +248,7 @@ x-------------------------------------------------------------------------------
                     # Bool arvot päivitetään
                     suunta_valittu = False
                     event = True
+                    animaatio = True
                     jatkuu = True
 
                     break

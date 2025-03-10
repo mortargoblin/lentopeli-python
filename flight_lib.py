@@ -234,8 +234,7 @@ def upgrade_airplane(raha, valinta, lentokone_di):
 # [0] :  merkkijono kuvaa tapahtuman
 # [1] :  päivitetty rahan arvo
 def random_event(raha):
-    sattuma = random.random()
-    if sattuma < 0.5:
+    if random.random() < 0.3:
         random_juttu = random.choice(["ryosto", "bonus"])
         if random_juttu == "ryosto":
             vahennys = 10000
@@ -252,12 +251,15 @@ def random_event(raha):
     else:
         return None
 
+# Tyhjentää ammount määrän rivejä terminaalista
+def clear(ammount = 200):
+    for _ in range(ammount):
+        sys.stdout.write("\x1b[1A\x1b[2K")
+
 def animaatio():
     animaatio_str = art.Animation.list
 
-    for i in range(10):
+    for i in range(8):
         print(animaatio_str[i % len(animaatio_str)])
-        for _ in range(23):
-            # Poistetaan rivejä
-            sys.stdout.write("\x1b[1A\x1b[2K")
+        clear(23)
         sleep(0.15)
