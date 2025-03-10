@@ -59,14 +59,21 @@ print("")
 
 suunta_valittu = False
 event = False
+animaatio = True
 
 ### Pelin "main" loop tässä
 while True: 
-    if event == True:
+    # Animaatio
+    if animaatio == True and suunta_valittu == False:          
+        flight_lib.animaatio()
+
+    # Random eventit
+    if event == True and suunta_valittu == False:
         event_outcome = flight_lib.random_event(raha)
         if event_outcome != None:
             print(event_outcome[0])
             input("Paina [ENTER]")
+            print("")
             raha = event_outcome[1]
 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
@@ -102,10 +109,12 @@ x---------------------------------------------------------------x---------x"""
                 if kentta["type"]=="large_airport":
                     base_reward = 3500
 
+                # Tämä tulisi siirtää kirjastoon
                 etaisyys = distance.distance(sijainti["deg"],(kentta["lat"],kentta["long"])).km
                 etaisyys_raha = etaisyys * 2
                 bonus = 0
                 country_reward = 1
+
                 match kentta["iso_country"]:
                     case "RU"|"BY":
                         country_reward = 0.75
@@ -161,7 +170,7 @@ x---------------------------------------------------------------x---------x"""
             print("[Q]: Poistu")
             print("SHOW icao: näyttää haluamasi lentokentän sijainnin kartalla. Esim. EDDB")
             print("PROMPT: Näyttää kartan, statsit ja keikat uudestaan")
-            print("UPGRADE: Pääset päivittämään konettasi.")
+            print("UPGRADE: Osta uusi lentokone.")
 
         #Komento jolla koneen päivitys onnistuu
         elif komento.upper() == "UPGRADE":
@@ -230,19 +239,23 @@ x-------------------------------------------------------------------------------
                         "deg": (liike_lista[i]["lat"], liike_lista[i]["long"]),
                         "nimi": liike_lista[i]["name"]
                     }
+                    # Sijaiti lisätään visited-listaan
                     if sijainti["ident"] not in visited_ident:
                         visited_ident.append(sijainti["ident"])
-                    else:
-                        pass
+
                     if kentta["iso_country"] not in visited_country:
                         visited_country.append(kentta["iso_country"])
-                    else:
-                        pass
+
+                    # Rahaan lisätään relevantti reward
                     raha += liike_lista[i]["reward"]
-                    suunta_valittu = False
+
                     target_lista = None
+
+                    # Bool arvot päivitetään
+                    suunta_valittu = False
                     event = True
-                    jatkuu = True                    
+                    jatkuu = True
+
                     break
                 elif i+1 == len(liike_lista):
                     # Jos lentokenttää ei löytynyt eikä komentoa tunnistettu
