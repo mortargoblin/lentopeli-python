@@ -1,22 +1,10 @@
 # LENTO-/RAHTIPELI
 
-# Huom! funktiot tuolla
 import flight_lib
-from flight_lib import Color
+import art
+from art import Color
 import random
-import mysql.connector
 from geopy import distance
-
-yhteys = mysql.connector.connect (
-    host='127.0.0.1',
-    port= 3306,
-    database='rahtipeli',
-    user='pythonuser',  # HUOM käyttäjä: pythonuser
-    password='salainen-sana',  # HUOM salasana
-    autocommit=True,
-    collation='utf8mb3_general_ci'
-)
-kursori = yhteys.cursor()
 
 ### Keskeiset muttujat:
 
@@ -46,8 +34,8 @@ kantama = lentokone_di["kantama"]  # Määrittää miten kauas kone kulkee (km)
 valinnanvara = lentokone_di["valinnanvara"]  # Määrittää miten monta kenttää tarjotaan per vuoro
 
 # Pelin aloitus
-print(flight_lib.StartScreen.picture + "\n")
-print(flight_lib.StartScreen.title)
+print(art.StartScreen.picture + "\n")
+print(art.StartScreen.title)
 print("                Hieno alaotsikko tai jtn tässä")
 print(" ..............................................................." + "\n\n")
 input(" paina [ENTER]")
@@ -77,12 +65,12 @@ while True:
             raha = event_outcome[1]
 
     # "stats_prompt" näyttää pelaajalle hyödyllistä infoa.
-    stats_prompt = f"""x---------------------------------------------------------------x---------x
-|   Raha:       {(str(int(raha))+" €").ljust(48)               }|    ^    |
-|   Sijainti:   {sijainti["nimi"].ljust(48)                    }|    N    |
-|   Lentokone:  {lentokone_di["tyyppi"].ljust(48)              }|  W + E  |
-|   Kantama:    {(str(kantama)+" km").ljust(48)                }|    S    |
-x---------------------------------------------------------------x---------x"""
+    stats_prompt = f"""x----------------------------------------------x---------x
+|   Raha:       {(str(int(raha))+" €").ljust(31)   }|    ^    |
+|   Sijainti:   {sijainti["nimi"].ljust(31)[:31]   }|    N    |
+|   Lentokone:  {lentokone_di["tyyppi"].ljust(31)  }|  W + E  |
+|   Kantama:    {(str(kantama)+" km").ljust(31)    }|    S    |
+x----------------------------------------------x---------x"""
     #Koneen päivitys kysely
 
     # Tässä kartta. huom: eu_map_marked(long, lat) ottaa long ja lat arvot
@@ -100,7 +88,7 @@ x---------------------------------------------------------------x---------x"""
             liike_lista_str = ""
             target_lista = []
             # Liike_lista_str ensimmäiset rivit
-            liike_lista_str = f"   Palkkio   ICAO      Lentokentän nimi      -= KEIKAT =-\n"
+            liike_lista_str = f" - Palkkio - ICAO ---- Lentokentän nimi -------== KEIKAT ==-------\n"
             for kentta in liike_lista:
                 # kentta_stats tallennetaan musitiin uudelleenkäyttöä varten
                 target_lista.append((kentta["lat"], kentta["long"]))
@@ -138,7 +126,7 @@ x---------------------------------------------------------------x---------x"""
                 # Liike_lista_str tallennetaan muistiin
                 liike_lista_str += (f"{Color.fg.lightcyan}{kentta["id"]}{Color.reset} | "
                 f"{Color.fg.green}{(str(int(reward)) + "€").ljust(7)}{Color.reset}| {kentta["ident"].ljust(7)}|"
-                f"  {kentta["name"].ljust(30)} | {int(etaisyys)}km | {kentta["iso_country"]}{"\n"}")
+                f"  {kentta["name"].ljust(30)[:30]} | {(str(int(etaisyys))+"km").ljust(7)}| {kentta["iso_country"]}{"\n"}")
 
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
             print(stats_prompt)
