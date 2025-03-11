@@ -232,52 +232,6 @@ def upgrade_airplane(raha, valinta, lentokone_di):
     else:
         return None
 
-def upgrade_parts(ominaisuus, pituus, raha, lentokone_di):
-    print("terve")
-    if ominaisuus.upper() == "KANTAMA" :
-        if pituus == "1":
-            if raha >= 50000:
-                lentokone_di["kantama"] = 400
-                raha -= 50000
-
-        elif pituus == 2:
-            if raha >= 70000:
-                lentokone_di["kantama"] = 500
-                raha -= 70000
-
-        elif pituus == 3:
-            if raha >= 100000:
-                lentokone_di["kantama"] = 550
-                raha -= 100000
-        return raha, lentokone_di
-
-    elif ominaisuus == "kerroin":
-        if pituus == 1:
-            if raha >= 50000:
-                lentokone_di["kerroin"] = 1.2
-                raha -= 50000
-
-        elif pituus == 2:
-            if raha >= 70000:
-                lentokone_di["kerroin"] = 1.4
-                raha -= 70000
-
-        elif pituus == 3:
-            if raha >= 100000:
-                lentokone_di["kerroin"] = 1.6
-                raha -= 100000
-        return raha, lentokone_di
-
-    elif ominaisuus == "valinnanvara":
-        if pituus == 1:
-            if raha >= 30000:
-                lentokone_di["kerroin"] = 5
-                raha -= 30000
-        return lentokone_di, raha
-
-    else:
-        return None
-
 #random eventti
 # [0] :  merkkijono kuvaa tapahtuman
 # [1] :  päivitetty rahan arvo
