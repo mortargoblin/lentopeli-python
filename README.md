@@ -18,7 +18,7 @@
 
 TEHKÄÄ!!!
 
-VUOREN MÄÄRÄ about 30
+VUOROJEN MÄÄRÄ about 30
 lentokoneiden päivityksien hinnat ja specsit yms. (sql)
  - vuorojen määrä pitäis näkyä pelaajalle
 high score menetelmä
