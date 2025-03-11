@@ -69,8 +69,11 @@ while True:
 
 
     # Animaatio
-    animaatio == True and suunta_valittu == False
-    flight_lib.animaatio()
+    if animaatio == True and suunta_valittu == False and paivitys == None:
+        print(f'{Color.fg.red}Rahasi eivät riitä{Color.reset}')
+
+    elif animaatio == True and suunta_valittu == False:
+        flight_lib.animaatio()
 
     # Random eventit
     if event == True and suunta_valittu == False:
@@ -180,27 +183,97 @@ x----------------------------------------------x---------x"""
 
         #Komento jolla koneen päivitys onnistuu
         elif komento.upper() == "UPGRADE":
-            print("Koneet ja niiden ominaisuudet.")
-            koneet = f"""x----------------------------------------------------------------------------------------x
-|   1. Kone = Tyyppi: Stor Dam 23 / Kantama: 700 / Kerroin: 1.4 / Hinta: 600000 €        |
-|   2. Kone = Tyyppi: Nanny 24 / Kantama: 1200 / Kerroin: 1.7 / Hinta: 1000000 €         |
-|   3. Kone = Tyyppi: Mamma Birgitta 25 / Kantama: 1600 / kerroin: 2.0 Hinta: 1500000 €  |
-x----------------------------------------------------------------------------------------x"""
-            print(koneet)
-            print(f'Sinulla on rahaa {int(raha)} €')
-            print("Valitse haluamasi päivitys numerolla [1 / 2 / 3].")
-            valinta = input("> ")
+            print("Haluatko päivittää nykyisen konene osia vai koko koneen. Vastaa: [osa / kone]")
+            kumpi = input(">>>")
+            if kumpi.upper() == "OSA":
+                print("Tämän hetkinen koneesi")
+                print(f"Tyyppi: {lentokone_di["tyyppi"]}, Kantama: {lentokone_di["kantama"]}, "
+                      f"Kerroin: {lentokone_di["kerroin"]}, Valinnanvara: {lentokone_di["valinnanvara"]}")
+                print("\nPäivitys mahdollisuudet ovat KANTAMA / KERROIN / VALINNANVARA.")
+                print("\nValitse päivitys sen nimellä.")
+                ominaisuus = input(">>>")
+                if ominaisuus.upper() == "KANTAMA":
+                    vaihtoehto = f"""x---------------------------------------------------x
+|                --| Kantama |--                    |
+|                                                   |
+|   1. Vahtoehto: 400 km     Hinta: 50 000 €        |
+|   2. Vahtoehto: 500 km     Hinta: 70 000 €        |
+|   3. Vaihtoehto: 550 km    Hinta: 100 000 €       |  
+x---------------------------------------------------x"""
+                    print(vaihtoehto)
+                    print("Valitse haluamasi päivitys sitä vastaavalla numerolla")
+                    pituus = input(">>>")
+                    osa_paivitys = flight_lib.upgrade_parts(ominaisuus, pituus, raha, lentokone_di)
+                    if osa_paivitys == None:
+                        print(f'{Color.fg.red}Rahasi eivät riitä koneen päivitykseen{Color.reset}')
+                    else:
+                        lentokone_di, raha = osa_paivitys[0], osa_paivitys[1]
+                        kantama = lentokone_di["kantama"]
+                        valinnanvara = lentokone_di["valinnanvara"]
+                    jatkuu = True
 
-            paivitys = flight_lib.upgrade_airplane(raha, valinta, lentokone_di)
-            if paivitys == None:
-                print(f'{Color.fg.red}Rahasi eivät riitä koneen päivitykseen{Color.reset}')
-            else:
-                lentokone_di, raha = paivitys[0], paivitys[1]
-                kantama = lentokone_di["kantama"]
-                valinnanvara = lentokone_di["valinnanvara"]
-            jatkuu = True
 
 
+            elif ominaisuus.upper() == "KERROIN":
+                    vaihtoehto = f"""x------------------------------------------------x
+|                --| Kerroin |--                 |
+|                                                |
+|   1. Vahtoehto: 1.2     Hinta: 50 000 €        |
+|   2. Vahtoehto: 1.4     Hinta: 70 000 €        |
+|   3. Vaihtoehto: 1.6    Hinta: 100 000 €       |  
+x------------------------------------------------x"""
+                    print(vaihtoehto)
+                    print("Valitse haluamasi päivitys sitä vastaavalla numerolla")
+                    pituus = input(">>> ")
+                    osa_paivitys = flight_lib.upgrade_parts(ominaisuus, pituus, raha, lentokone_di)
+                    if osa_paivitys == None:
+                        print(f'{Color.fg.red}Rahasi eivät riitä koneen päivitykseen{Color.reset}')
+                    else:
+                        lentokone_di, raha = osa_paivitys[0], osa_paivitys[1]
+                        kantama = lentokone_di["kantama"]
+                        valinnanvara = lentokone_di["valinnanvara"]
+                    jatkuu = True
+
+            elif ominaisuus.upper() == "VALINNANVARA":
+                    vaihtoehto = f"""x-----------------------------------------x
+|         --| Valinnanvara |--            |
+|                                         |
+|   1. Vahtoehto: 5     Hinta: 70 000 €   |
+x-----------------------------------------x"""
+                    print(vaihtoehto)
+                    print("Valitse haluamasi päivitys sitä vastaavalla numerolla")
+                    pituus = input("> ")
+                    osa_paivitys = flight_lib.upgrade_parts(ominaisuus, pituus, raha, lentokone_di)
+                    if osa_paivitys == None:
+                        print(f'{Color.fg.red}Rahasi eivät riitä koneen päivitykseen{Color.reset}')
+                    else:
+                        lentokone_di, raha = osa_paivitys[0], osa_paivitys[1]
+                        kantama = str(lentokone_di["kantama"])
+                        valinnanvara = lentokone_di["valinnanvara"]
+                    jatkuu = True
+
+
+
+            elif kumpi.upper() == "KONE":
+                print("Koneet ja niiden ominaisuudet.")
+                koneet = f"""x----------------------------------------------------------------------------------------x
+    |   1. Kone = Tyyppi: Stor Dam 23 / Kantama: 700 / Kerroin: 1.4 / Hinta: 600000 €        |
+    |   2. Kone = Tyyppi: Nanny 24 / Kantama: 1200 / Kerroin: 1.7 / Hinta: 1000000 €         |
+    |   3. Kone = Tyyppi: Mamma Birgitta 25 / Kantama: 1600 / kerroin: 2.0 Hinta: 1500000 €  |
+    x----------------------------------------------------------------------------------------x"""
+                print(koneet)
+                print(f'Sinulla on rahaa {int(raha)} €')
+                print("Valitse haluamasi päivitys numerolla [1 / 2 / 3].")
+                valinta = input("> ")
+
+                paivitys = flight_lib.upgrade_airplane(raha, valinta, lentokone_di)
+                if paivitys == None:
+                    print(f'{Color.fg.red}Rahasi eivät riitä koneen päivitykseen{Color.reset}')
+                else:
+                    lentokone_di, raha = paivitys[0], paivitys[1]
+                    kantama = lentokone_di["kantama"]
+                    valinnanvara = lentokone_di["valinnanvara"]
+                jatkuu = True
 
 
         # Tässä show komento, joka näyttää lentokentän sijainnin kartalla
