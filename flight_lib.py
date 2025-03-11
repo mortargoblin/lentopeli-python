@@ -247,7 +247,9 @@ def random_event(raha):
             bonus = 10000
             raha += bonus
             # Tähän vielä tekstiä lisää
-            return f"\nSait Bonusta {bonus} €\n", raha
+            return f"""\n   {Color.bg.green}Hyvä tuuri!{Color.reset} 
+   Keikka todistautui tuottoisammaksi, kun oletit. 
+   Tienasit {bonus}€ ylimääräistä\n""", raha
     else:
         return None
 
