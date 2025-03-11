@@ -194,8 +194,7 @@ def eu_map_marked(long, lat, targets = None):
 
 #Päivitykset, kesken!!!!!
 def upgrade_airplane(raha, valinta, lentokone_di):
-    if valinta == "1":
-        if raha >= 200000:
+    if valinta == "1" and raha >= 200000:
             if lentokone_di["tyyppi"] != "Stor Dam 23":
                 paivitys = {
                     "tyyppi": "Stor Dam 23", 
@@ -205,8 +204,7 @@ def upgrade_airplane(raha, valinta, lentokone_di):
                     "valinnanvara" : 6}
                 vahennys = raha - paivitys["hinta"]
                 return paivitys, vahennys
-    elif valinta == "2":
-        if raha >= 1000000:
+    elif valinta == "2" and raha >= 1000000:
             if lentokone_di["tyyppi"] != "Nanny 24":
                 paivitys = {
                     "tyyppi": "Nanny 24", 
@@ -216,8 +214,7 @@ def upgrade_airplane(raha, valinta, lentokone_di):
                     "valinnanvara" : 7}
                 vahennys = raha - paivitys["hinta"]
                 return paivitys, vahennys
-    elif valinta == "3":
-        if raha >= 1500000:
+    elif valinta == "3" and raha >= 1500000:
             if lentokone_di["tyyppi"] != "Mamma Birgitta 25":
                 paivitys = {
                     "tyyppi": "Mamma Birgitta 25", 
@@ -227,27 +224,44 @@ def upgrade_airplane(raha, valinta, lentokone_di):
                     "valinnanvara" : 8}
                 vahennys = raha - paivitys["hinta"]
                 return paivitys, vahennys
-    else:
-        return None
+    elif valinta in "123" and len(valinta) == 1:
+        print("raha ei riitä")
+        input("")
+
+    return None
+
 
 #random eventti
 # [0] :  merkkijono kuvaa tapahtuman
 # [1] :  päivitetty rahan arvo
 def random_event(raha):
-    if random.random() < 0.3:
-        random_juttu = random.choice((0, 1))
+    if random.random() < 0.9:
+        random_juttu = random.randint(0, 1)
         if random_juttu == 0:
-            vahennys = 10000
+            # MENETYS
+            vahennys = random.uniform(3000, 16000)
             raha -= vahennys
-            return f"""\n   {Color.bg.red}Voi ei!{Color.reset}
-   Laskeutuessasi huomasit koneen vaativan välitöntä huoltoa.  
-   kulut: {vahennys}€\n""", raha
+
+            tulos_str = f"""{Color.fg.red}{flight_art.Money.euro}{Color.reset}
+
+    {Color.bg.red}Voi ei!{Color.reset}
+    Laskeutuessasi huomasit koneen vaativan välitöntä huoltoa.  
+    kulut: {int(vahennys)}€\n"""
+
+            return tulos_str, raha
 
         elif random_juttu == 1:
-            bonus = 10000
+            # ANSIO
+            bonus = random.uniform(1000,9000)
             raha += bonus
-            return f"""\n   {Color.bg.green}Onneksi olkoon!{Color.reset}
-            Keikka osoittautui tuottoisemmaksi sait bonusta: {bonus} €\n""", raha
+
+            tulos_str = f"""{Color.fg.green}{flight_art.Money.euro}{Color.reset}
+
+    {Color.bg.green}Onneksi olkoon!{Color.reset}
+    Keikka osoittautui tuottoisemmaksi kuin oletit,
+    tienasit ylimääräistä: {int(bonus)} €\n"""
+            return tulos_str, raha
+
         elif random_juttu == "shady":
             kysy = input(" Haluatko ottaa epäilyttävän kuorman? (K/E): ").strip().lower()
             if kysy == "K":
@@ -255,8 +269,12 @@ def random_event(raha):
                 if on_success:
                     palkkio = 20000
                     raha += palkkio
-                    return f"""\n   {Color.bg.yellow}Riskialtis lasti!{Color.reset}
-                     Otit riskialitsta lastia ja se kannatti tienasit: {palkkio} €\n""", raha
+
+                    tulos_str = f"""   
+                    
+{Color.bg.yellow}Riskialtis lasti!{Color.reset}
+ Otit riskialitsta lastia ja se kannatti tienasit: {palkkio} €\n"""
+                    return tulos_str, raha
     else:
         return None
 
