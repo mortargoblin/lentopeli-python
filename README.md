@@ -13,3 +13,15 @@
 - jo valmiiksi käytyihin lentokenttiin debuff
 - save/load tsydeemi (ehkä)
 - setup script (ehkä)
+
+11.03 
+
+TEHKÄÄ!!!
+
+VUOREN MÄÄRÄ about 30
+lentokoneiden päivityksien hinnat ja specsit yms. (sql)
+ - vuorojen määrä pitäis näkyä pelaajalle
+high score menetelmä
+lentokoneiden arvo pelin päättyessä 80% arvosta
+suunnassa ei kenttiä = -10k
+random eventtien siistiminen
