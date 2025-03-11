@@ -69,11 +69,9 @@ while True:
 
 
     # Animaatio
-    if animaatio == True and suunta_valittu == False and paivitys == None:
-        print(f'{Color.fg.red}Rahasi eivät riitä{Color.reset}')
-
-    elif animaatio == True and suunta_valittu == False:
+    if animaatio == True and suunta_valittu == False:
         flight_lib.animaatio()
+    animaatio = False
 
     # Random eventit
     if event == True and suunta_valittu == False:
