@@ -53,7 +53,11 @@ print(flight_art.StartScreen.title)
 
 input(" paina [ENTER]")
 
-print("\n\n Tässä pelin loredump, selitys, avaus, yms")
+print("\n\n Tervetuloa rahtilento yrittäjäksi! ")
+print("Aloitat Helsinki-Vantaalta omalla rahtikoneellasi. Valitse reittisi, kuljeta lastia ja kasvata varallisuuttasi. ")
+print("Päivitä konettasi kantaman, lastikapasiteetin ja tuottojen parantamiseksi. ")
+print("Muista, että aikasi on rajallinen – tee fiksuja valintoja ja maksimoi voitot ennen pelin päättymistä. ")
+print("Oletko valmis nousemaan ilmaan? ")
 print(" kirjoita help saadaksesi listan komennoista kun peli on alkanut\n")
 input(" paina [ENTER]")
 print("")

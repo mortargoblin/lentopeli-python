@@ -246,10 +246,17 @@ def random_event(raha):
         elif random_juttu == 1:
             bonus = 10000
             raha += bonus
-            # Tähän vielä tekstiä lisää
-            return f"""\n   {Color.bg.green}Hyvä tuuri!{Color.reset} 
-   Keikka todistautui tuottoisammaksi, kun oletit. 
-   Tienasit {bonus}€ ylimääräistä\n""", raha
+            return f"""\n   {Color.bg.green}Onneksi olkoon!{Color.reset}
+            Keikka osoittautui tuottoisemmaksi sait bonusta: {bonus} €\n""", raha
+        elif random_juttu == "shady":
+            kysy = input(" Haluatko ottaa epäilyttävän kuorman? (K/E): ").strip().lower()
+            if kysy == "K":
+                on_success = random.choice([True, False])
+                if on_success:
+                    palkkio = 20000
+                    raha += palkkio
+                    return f"""\n   {Color.bg.yellow}Riskialtis lasti!{Color.reset}
+                     Otit riskialitsta lastia ja se kannatti tienasit: {palkkio} €\n""", raha
     else:
         return None
 
