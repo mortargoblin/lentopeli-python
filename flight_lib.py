@@ -239,7 +239,7 @@ def random_event(raha):
         random_juttu = random.randint(0, 1)
         if random_juttu == 0:
             # MENETYS
-            vahennys = random.uniform(3000, 16000)
+            vahennys = random.uniform(3000, 12000)
             raha -= vahennys
 
             tulos_str = f"""{Color.fg.red}{flight_art.Money.euro}{Color.reset}
