@@ -8,8 +8,6 @@ from flight_art import Color
 from geopy import distance
 from time import sleep
 
-
-
 # Color class tekstin värittelyä varten
 
 
@@ -237,15 +235,15 @@ def upgrade_airplane(raha, valinta, lentokone_di):
 # [1] :  päivitetty rahan arvo
 def random_event(raha):
     if random.random() < 0.3:
-        random_juttu = random.choice(["ryosto", "bonus"])
-        if random_juttu == "ryosto":
+        random_juttu = random.choice((0, 1))
+        if random_juttu == 0:
             vahennys = 10000
             raha -= vahennys
             return f"""\n   {Color.bg.red}Voi ei!{Color.reset}
    Laskeutuessasi huomasit koneen vaativan välitöntä huoltoa.  
    kulut: {vahennys}€\n""", raha
 
-        elif random_juttu == "bonus":
+        elif random_juttu == 1:
             bonus = 10000
             raha += bonus
             # Tähän vielä tekstiä lisää

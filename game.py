@@ -220,12 +220,16 @@ x-------------------------------------------------------------------------------
 
         # Prompt-komento näyttää kartan ja statsit uudestaan
         elif komento.upper() == "PROMPT":
-            print(flight_lib.eu_map_marked(sijainti["deg"][1], sijainti["deg"][0], target_lista), end="")
-            print(stats_prompt)
+            
+            
             if suunta_valittu == True:
+                print(flight_lib.eu_map_marked(sijainti["deg"][1], sijainti["deg"][0]), end="")
+                print(stats_prompt)
                 print(liike_lista_str)
                 print("Valitse keikka antamalla kohteen numero")
             else:
+                print(flight_lib.eu_map_marked(sijainti["deg"][1], sijainti["deg"][0], target_lista), end="")
+                print(stats_prompt)
                 print("Valitse suunta [N/W/S/E]")
 
         # Poistumiskomento
