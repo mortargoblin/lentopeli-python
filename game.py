@@ -18,7 +18,7 @@ yhteys = mysql.connector.connect (
     collation='utf8mb3_general_ci'
     )
 kursori = yhteys.cursor()
-
+# python -X utf8 .\game.py
 ### Keskeiset muttujat:
 
 # Tämänhetkisen sijainnin arvot on sanakirjassa.
@@ -119,33 +119,12 @@ x----------------------------------------------x---------x"""
 
                 # Tämä tulisi siirtää kirjastoon
                 etaisyys = distance.distance(sijainti["deg"],(kentta["lat"],kentta["long"])).km
-                etaisyys_raha = etaisyys * 2
-                bonus = 0
-                country_reward = 1
 
-                match kentta["iso_country"]:
-                    case "RU"|"BY":
-                        country_reward = 0.75
-                    case "FI"|"PL"|"EE"|"HR"|"GR":
-                        country_reward = 0.95
-                    case "SE"|"NO"|"DK"|"FR"|"CH"|"SP":
-                        country_reward = 1.1
-                    case "GB"|"IT"|"AT":
-                        country_reward = 1.05
-                    case "DE"|"LU":
-                        country_reward = 1.2
-
-                if kentta["ident"] in visited_ident:
-                    base_reward = base_reward / 2
-                else:
-                    pass
-
-                reward = ((base_reward * float(lentokone_di["kerroin"]))  + etaisyys_raha) * random.uniform(0.9,1.1) * country_reward
-                kentta["reward"] = reward
+                kentta["reward"] = flight_lib.reward(kentta["iso_country"], kentta["ident"], etaisyys, visited_ident, base_reward, lentokone_di)
 
                 # Liike_lista_str tallennetaan muistiin
                 liike_lista_str += (f"{Color.fg.lightcyan}{kentta["id"]}{Color.reset} | "
-                f"{Color.fg.green}{(str(int(reward)) + "€").ljust(7)}{Color.reset}| {kentta["ident"].ljust(7)}|"
+                f"{Color.fg.green}{(str(int(kentta["reward"])) + "€").ljust(7)}{Color.reset}| {kentta["ident"].ljust(7)}|"
                 f"  {kentta["name"].ljust(30)[:30]} | {(str(int(etaisyys))+"km").ljust(7)}| {kentta["iso_country"]}{"\n"}")
 
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")

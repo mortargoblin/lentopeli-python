@@ -265,3 +265,25 @@ def animaatio():
         clear(26)
         sleep(0.08)
     clear(28)
+
+def reward(country, ident, etaisyys, visited_ident, base_reward, lentokone_di):
+    etaisyys_raha = etaisyys * 2
+    bonus = 0
+    country_reward = 1
+
+    match country:
+        case "RU" | "BY":
+            country_reward = 0.75
+        case "FI" | "PL" | "EE" | "HR" | "GR":
+            country_reward = 0.95
+        case "SE" | "NO" | "DK" | "FR" | "CH" | "SP":
+            country_reward = 1.1
+        case "GB" | "IT" | "AT":
+            country_reward = 1.05
+        case "DE" | "LU":
+            country_reward = 1.2
+
+    if ident in visited_ident:
+        base_reward = base_reward / 2
+
+    return ((base_reward * float(lentokone_di["kerroin"])) + etaisyys_raha) * random.uniform(0.9,1.1) * country_reward
