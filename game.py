@@ -174,7 +174,7 @@ x--------------------------------------------------------x"""
                 koneet = f"""x------------------------------------------------------------------------------------------x
 |   1. Kone = Tyyppi: Stor Dam 23 / Kantama: 450 / Kerroin: 1.4 / Hinta: 25 000 €          |
 |   2. Kone = Tyyppi: Nanny 24 / Kantama: 650 / Kerroin: 1.6 / Hinta: 60 000 €             |
-|   3. Kone = Tyyppi: Mamma Birgitta 25 / Kantama: 2000 / Kerroin: 2.0 / Hinta: 100 000 €  |
+|   3. Kone = Tyyppi: Mamma Birgitta 25 / Kantama: 1500 / Kerroin: 2.0 / Hinta: 100 000 €  |
 x------------------------------------------------------------------------------------------x"""
                 print(koneet)
                 print(f'Sinulla on rahaa {int(raha)} €')
