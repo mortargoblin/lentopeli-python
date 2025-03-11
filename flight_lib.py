@@ -235,8 +235,8 @@ def upgrade_airplane(raha, valinta, lentokone_di):
 # [0] :  merkkijono kuvaa tapahtuman
 # [1] :  päivitetty rahan arvo
 def random_event(raha):
-    if random.random() < 0.9:
-        random_juttu = random.randint(0, 1)
+    if random.random() < 0.3:
+        random_juttu = random.randint(0, 3)
         if random_juttu == 0:
             # MENETYS
             vahennys = random.uniform(3000, 12000)
@@ -262,7 +262,8 @@ def random_event(raha):
     tienasit ylimääräistä: {int(bonus)} €\n"""
             return tulos_str, raha
 
-        elif random_juttu == "shady":
+        # ToDo: riskikeikka
+        elif random_juttu == 3:
             kysy = input(" Haluatko ottaa epäilyttävän kuorman? (K/E): ").strip().lower()
             if kysy == "K":
                 on_success = random.choice([True, False])

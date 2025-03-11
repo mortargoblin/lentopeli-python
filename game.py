@@ -65,15 +65,15 @@ print("")
 suunta_valittu = False
 event = False
 animaatio = False
+vuorot = 30
+player_nimi = "Rahtifirma"
 
 ### Pelin "main" loop tässä
-while True: 
+while vuorot > 0: 
     # Näytön tyhjentäminen
     flight_lib.clear()
-
-
+    
     # Animaatio
-
     if animaatio == True and suunta_valittu == False:
         flight_lib.animaatio()
     animaatio = False
@@ -95,6 +95,9 @@ while True:
 |   Lentokone:  {lentokone_di["tyyppi"].ljust(31)  }|  W + E  |
 |   Kantama:    {(str(kantama)+" km").ljust(31)    }|    S    |
 x----------------------------------------------x---------x"""
+    header_pompt = f"""x--------------------------------------------------------x
+|  {player_nimi.ljust(30)}   Päiviä jäljellä: {str(vuorot).ljust(2)}  |
+x--------------------------------------------------------x"""
     #Koneen päivitys kysely
 
     # Tässä kartta. huom: eu_map_marked(long, lat) ottaa long ja lat arvot
@@ -102,6 +105,7 @@ x----------------------------------------------x---------x"""
     # X merkitsee long ja lat arvojen ylimalkaisen sijainnin
     jatkuu = False
     if suunta_valittu == False:
+        print(header_pompt)
         print(flight_lib.eu_map_marked(sijainti["deg"][1], sijainti["deg"][0]), end="")
         print(stats_prompt)
         print("Valitse suunta [N/W/S/E]")
@@ -131,6 +135,7 @@ x----------------------------------------------x---------x"""
                 f"{Color.fg.green}{(str(int(kentta["reward"])) + "€").ljust(7)}{Color.reset}| {kentta["ident"].ljust(7)}|"
                 f"  {kentta["name"].ljust(30)[:30]} | {(str(int(etaisyys))+"km").ljust(7)}| {kentta["iso_country"]}{"\n"}")
 
+            print(header_pompt)
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
             print(stats_prompt)
             print(liike_lista_str)
@@ -178,7 +183,7 @@ x-------------------------------------------------------------------------------
 
                 paivitys = flight_lib.upgrade_airplane(raha, valinta, lentokone_di)
                 if paivitys == None:
-                    print(f'{Color.fg.red}Rahasi eivät riitä koneen päivitykseen{Color.reset}')
+                    event == False
                 else:
                     lentokone_di, raha = paivitys[0], paivitys[1]
                     kantama = lentokone_di["kantama"]
@@ -251,6 +256,7 @@ x-------------------------------------------------------------------------------
                     suunta_valittu = False
                     event = True
                     animaatio = True
+                    vuorot -= 1
                     jatkuu = True
 
                     break
@@ -258,3 +264,6 @@ x-------------------------------------------------------------------------------
                     # Jos lentokenttää ei löytynyt eikä komentoa tunnistettu
                     print("Komentoa ei tunnistettu, kirjoita help saadaksesi"
                     "listan komennoista.")
+
+### Pelin lopetus
+print("Morjens")
