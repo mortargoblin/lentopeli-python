@@ -111,7 +111,7 @@ x--------------------------------------------------------x"""
         print("Valitse suunta [N/W/S/E]")
     else:
         # Kutsutaan liike_lista funktio, joka palauttaa mahdolliset keikat
-        liike_lista = flight_lib.find_ports(sijainti["ident"],kantama,valinnanvara,suunta)
+        liike_lista = flight_lib.find_ports(sijainti["ident"],int(kantama),valinnanvara,suunta, lentokone_di)
         if liike_lista != False:
             liike_lista_str = ""
             target_lista = []
@@ -133,7 +133,7 @@ x--------------------------------------------------------x"""
                 # Liike_lista_str tallennetaan muistiin
                 liike_lista_str += (f"{Color.fg.lightcyan}{kentta["id"]}{Color.reset} | "
                 f"{Color.fg.green}{(str(int(kentta["reward"])) + "€").ljust(7)}{Color.reset}| {kentta["ident"].ljust(7)}|"
-                f"  {kentta["name"].ljust(30)[:30]} | {(str(int(etaisyys))+"km").ljust(7)}| {kentta["iso_country"]}{"\n"}")
+                f"  {kentta["name"].ljust(30)[:30]} | {(str(int(etaisyys))+"km").ljust(7)}| {kentta["iso_country"]}  {kentta["type"]}{"\n"}")
 
             print(header_pompt)
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
@@ -171,11 +171,11 @@ x--------------------------------------------------------x"""
         #Komento jolla koneen päivitys onnistuu
         elif komento.upper() == "UPGRADE":
                 print("Koneet ja niiden ominaisuudet.")
-                koneet = f"""x----------------------------------------------------------------------------------------x
-|   1. Kone = Tyyppi: Stor Dam 23 / Kantama: 700 / Kerroin: 1.4 / Hinta: 600000 €        |
-|   2. Kone = Tyyppi: Nanny 24 / Kantama: 1200 / Kerroin: 1.7 / Hinta: 1000000 €         |
-|   3. Kone = Tyyppi: Mamma Birgitta 25 / Kantama: 1600 / kerroin: 2.0 Hinta: 1500000 €  |
-x----------------------------------------------------------------------------------------x"""
+                koneet = f"""x------------------------------------------------------------------------------------------x
+|   1. Kone = Tyyppi: Stor Dam 23 / Kantama: 450 / Kerroin: 1.4 / Hinta: 25 000 €          |
+|   2. Kone = Tyyppi: Nanny 24 / Kantama: 650 / Kerroin: 1.6 / Hinta: 60 000 €             |
+|   3. Kone = Tyyppi: Mamma Birgitta 25 / Kantama: 2000 / Kerroin: 2.0 / Hinta: 100 000 €  |
+x------------------------------------------------------------------------------------------x"""
                 print(koneet)
                 print(f'Sinulla on rahaa {int(raha)} €')
                 print("Valitse haluamasi päivitys numerolla [1 / 2 / 3].")

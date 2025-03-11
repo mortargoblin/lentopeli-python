@@ -22,21 +22,32 @@ yhteys = mysql.connector.connect (
     )
 kursori = yhteys.cursor()
 
-def find_ports(sij, kant, valvara, suunta):
+def find_ports(sij, kant, valvara, suunta, lentokone_di):
     # Funktio tarvitsee yllämerkityt.
     # Funktio palauttaa listan sanakirjoja, joissa jokaisessa:
     # "ident", "name", "type", "iso_country", "lat", "long"
         
     # Ensimmäiseksi selvitetään lähtöpaikan sijainti
 
-    sql = f"SELECT latitude_deg, longitude_deg FROM airport where ident = '{sij}'"
-    kursori.execute(sql)
-    sij_deg = kursori.fetchone()
-    # Seuraavaksi haetaan tietokannasta KAIKKIEN kenttien allamerkityt tiedot.
-    sql = (f"SELECT ident, name, type, iso_country, latitude_deg,"
-           " longitude_deg FROM airport WHERE NOT type='small_airport'")
-    kursori.execute(sql)
-    airports = kursori.fetchall()
+    if lentokone_di["tyyppi"] == "Mamma Birgitta 25":
+        sql = f"SELECT latitude_deg, longitude_deg FROM airport where ident = '{sij}'"
+        kursori.execute(sql)
+        sij_deg = kursori.fetchone()
+        # Seuraavaksi haetaan tietokannasta KAIKKIEN kenttien allamerkityt tiedot.
+        sql = (f"SELECT ident, name, type, iso_country, latitude_deg,"
+               " longitude_deg FROM airport WHERE type='large_airport'")
+        kursori.execute(sql)
+        airports = kursori.fetchall()
+
+    else:
+        sql = f"SELECT latitude_deg, longitude_deg FROM airport where ident = '{sij}'"
+        kursori.execute(sql)
+        sij_deg = kursori.fetchone()
+        # Seuraavaksi haetaan tietokannasta KAIKKIEN kenttien allamerkityt tiedot.
+        sql = (f"SELECT ident, name, type, iso_country, latitude_deg,"
+               " longitude_deg FROM airport WHERE NOT type='small_airport'")
+        kursori.execute(sql)
+        airports = kursori.fetchall()
 
     # Tässä for loop käy jokaikisen lentokentän Euroopasta
     # läpi ja laskee jokaisen kohdalla etäisyyden lähtöpaikasta
@@ -63,7 +74,7 @@ def find_ports(sij, kant, valvara, suunta):
     # Seuraavaksi valitaan lopulliset kandidaatit sattumanvaraisesti
     # Palautettavien määrän määrittää valinnanvara-muuttuja
     tulos = []
-    for i in range(valvara):
+    for i in range(int(valvara)):
         try:
             pool_current = random.choice(pool)
             pool.remove(pool_current)                #if lentokone_di["tyyppi"] == "Mamma Birgitta":
@@ -193,6 +204,34 @@ def eu_map_marked(long, lat, targets = None):
 
 
 #Päivitykset, kesken!!!!!
+def upgrade_airplane_md(raha, valinta, lentokone_di):
+    sql = f"select type, distance, selection, price, factor from airplane where id = '{float(valinta)+1}'"
+    kursori.execute(sql)
+    tiedot = kursori.fetchall()
+
+    for arvo in tiedot:
+        if raha >= float(arvo[3]):
+            if lentokone_di["tyyppi"] != arvo[0]:
+                paivitys = {
+                    "tyyppi": arvo[0],
+                    "kantama": arvo[1],
+                    "valinnanvara": arvo[2],
+                    "hinta": arvo[3],
+                    "kerroin": arvo[4]}
+                vahennys = raha - float(arvo[3])
+                return paivitys, vahennys
+            else:
+                print("Sinulla on jo tämä kone")
+                input("Paina ENTER jatkaaksesi peliä.")
+                return None
+        elif valinta in "123" and len(valinta) == 1:
+            print("Rahasi ei riittänyt!")
+            input("Paina ENTER jatkaaksesi peliä.")
+
+        return None
+
+
+
 def upgrade_airplane(raha, valinta, lentokone_di):
     if valinta == "1" and raha >= 200000:
             if lentokone_di["tyyppi"] != "Stor Dam 23":
@@ -315,3 +354,5 @@ def reward(country, ident, etaisyys, visited_ident, base_reward, lentokone_di):
         base_reward = base_reward / 2
 
     return ((base_reward * float(lentokone_di["kerroin"])) + etaisyys_raha) * random.uniform(0.9,1.1) * country_reward
+
+
