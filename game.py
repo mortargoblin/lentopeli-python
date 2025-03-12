@@ -75,7 +75,7 @@ event = False
 animaatio = False
 
 ### Pelin "main" loop tässä
-while vuorot > 0: 
+while vuorot > 0:
     # Näytön tyhjentäminen
     flight_lib.clear()
     
@@ -272,4 +272,13 @@ x-------------------------------------------------------------------------------
                     "listan komennoista.")
 
 ### Pelin lopetus
-print("Morjens")
+flight_lib.clear()
+flight_lib.animaatio()
+print(f"""
+{Color.fg.yellow}Aika loppui!{Color.reset}
+
+Rahasi ajan loppuessa: {int(raha)}€
+Sijaintisi ajan loppuessa: {sijainti["nimi"]}
+""")
+
+input("")
