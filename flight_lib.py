@@ -33,7 +33,7 @@ def find_ports(sij, kant, valvara, suunta, lentokone_di):
     sij_deg = kursori.fetchone()
     # Seuraavaksi haetaan tietokannasta KAIKKIEN kenttien allamerkityt tiedot.
     if lentokone_di["tyyppi"] == "Mamma Birgitta 25":
-            sql = (f"SELECT ident, name, type, iso_country, latitude_deg,"
+        sql = (f"SELECT ident, name, type, iso_country, latitude_deg,"
                 " longitude_deg FROM airport WHERE type='large_airport'")
     else:
         sql = (f"SELECT ident, name, type, iso_country, latitude_deg,"
