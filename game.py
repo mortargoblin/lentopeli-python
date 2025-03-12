@@ -38,7 +38,7 @@ lentokone_di = {
     "tyyppi": "Lilla Damen 22", 
     "kantama": 300, 
     "kerroin": 1, 
-    "hinta": 2000000, 
+    "hinta": 0,
     "valinnanvara" : 4
     }
 
@@ -52,6 +52,7 @@ player_nimi = "Rahtifirma"
 flight_lib.clear()
 print(flight_art.StartScreen.picture + "\n")
 print(flight_art.StartScreen.title)
+
 
 input(" paina [ENTER]")
 
@@ -277,7 +278,10 @@ flight_lib.animaatio()
 print(f"""
 {Color.fg.yellow}Aika loppui!{Color.reset}
 
+Koneesi arvo ajan loppuessa: {int(lentokone_di["hinta"])} €
 Rahasi ajan loppuessa: {int(raha)}€
+
+\nMyit koneesi ja sait siitä 80% lisää voittoihisi: {int(raha)+(int(lentokone_di["hinta"]))*0.8} €
 Sijaintisi ajan loppuessa: {sijainti["nimi"]}
 """)
 

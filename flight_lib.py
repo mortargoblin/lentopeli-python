@@ -203,7 +203,7 @@ def eu_map_marked(long, lat, targets = None):
     return tulos
 
 
-#Päivitykset, kesken!!!!!
+#päivitys
 def upgrade_airplane_md(raha, valinta, lentokone_di):
     try:
         sql = f"select type, distance, selection, price, factor from airplane where id = '{float(valinta)+1}'"
