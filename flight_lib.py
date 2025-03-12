@@ -28,26 +28,18 @@ def find_ports(sij, kant, valvara, suunta, lentokone_di):
     # "ident", "name", "type", "iso_country", "lat", "long"
         
     # Ensimmäiseksi selvitetään lähtöpaikan sijainti
-
+    sql = f"SELECT latitude_deg, longitude_deg FROM airport where ident = '{sij}'"
+    kursori.execute(sql)
+    sij_deg = kursori.fetchone()
+    # Seuraavaksi haetaan tietokannasta KAIKKIEN kenttien allamerkityt tiedot.
     if lentokone_di["tyyppi"] == "Mamma Birgitta 25":
-        sql = f"SELECT latitude_deg, longitude_deg FROM airport where ident = '{sij}'"
-        kursori.execute(sql)
-        sij_deg = kursori.fetchone()
-        # Seuraavaksi haetaan tietokannasta KAIKKIEN kenttien allamerkityt tiedot.
-        sql = (f"SELECT ident, name, type, iso_country, latitude_deg,"
-               " longitude_deg FROM airport WHERE type='large_airport'")
-        kursori.execute(sql)
-        airports = kursori.fetchall()
-
+            sql = (f"SELECT ident, name, type, iso_country, latitude_deg,"
+                " longitude_deg FROM airport WHERE type='large_airport'")
     else:
-        sql = f"SELECT latitude_deg, longitude_deg FROM airport where ident = '{sij}'"
-        kursori.execute(sql)
-        sij_deg = kursori.fetchone()
-        # Seuraavaksi haetaan tietokannasta KAIKKIEN kenttien allamerkityt tiedot.
         sql = (f"SELECT ident, name, type, iso_country, latitude_deg,"
-               " longitude_deg FROM airport WHERE NOT type='small_airport'")
-        kursori.execute(sql)
-        airports = kursori.fetchall()
+                " longitude_deg FROM airport WHERE NOT type='small_airport'")
+    kursori.execute(sql)
+    airports = kursori.fetchall()
 
     # Tässä for loop käy jokaikisen lentokentän Euroopasta
     # läpi ja laskee jokaisen kohdalla etäisyyden lähtöpaikasta
