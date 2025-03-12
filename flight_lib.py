@@ -69,7 +69,7 @@ def find_ports(sij, kant, valvara, suunta, lentokone_di):
     for i in range(int(valvara)):
         try:
             pool_current = random.choice(pool)
-            pool.remove(pool_current)                #if lentokone_di["tyyppi"] == "Mamma Birgitta":
+            pool.remove(pool_current)
 
             tulos.append({
                 "id": i + 1,
@@ -236,8 +236,7 @@ def random_event(raha):
         random_juttu = random.randint(1, 3)
         if random_juttu == 1:
             # Tappio
-
-            vahennys = random.uniform(1000, raha / 2)
+            vahennys = random.uniform(500, raha / 2)
             if vahennys < 0:
                 return None
             raha -= vahennys
@@ -252,8 +251,11 @@ def random_event(raha):
 
         elif random_juttu == 2:
             # Menestys
-
-            bonus = random.uniform(1000, raha / 2.5)
+            if raha < 0:
+                bonus = random.uniform(10000, 20000)
+            else:
+                bonus = random.uniform(1000, raha / 2.5 + 2000)
+            
             raha += bonus
 
             tulos_str = f"""{Color.fg.green}{flight_art.Money.euro}{Color.reset}
