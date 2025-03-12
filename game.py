@@ -19,22 +19,21 @@ yhteys = mysql.connector.connect (
     )
 kursori = yhteys.cursor()
 # python -X utf8 .\game.py
+
 ### Keskeiset muttujat:
 
-# Tämänhetkisen sijainnin arvot on sanakirjassa.
-# Jos haluaa esimerkiksi käyttää sijainnin nimeä 
-# (Helsinki-Vantaa...) tulee käyttää sijainti["nimi"]
+# Tämänhetkinen sijainti
 sijainti = {
     "ident": "EFHK", # Tämänhetkinen ICAO-koodi, lähtöpaikka
     "deg": (60.3172, 24.963301), # Tämänhetkiseen sijainnin lat, long
     "nimi": "Helsinki-Vantaa Airport"
 }
 
-#Rahan määrä käyttäjällä
-raha = 1000000
+# Rahan määrä käyttäjällä
+raha = 2000
 visited_ident = []
 visited_country = []
-#Lentokoneen lähtötiedot
+# Lentokoneen lähtötiedot
 lentokone_di = {
     "tyyppi": "Lilla Damen 22", 
     "kantama": 300, 
@@ -46,6 +45,9 @@ lentokone_di = {
 kantama = lentokone_di["kantama"]  # Määrittää miten kauas kone kulkee (km)
 valinnanvara = lentokone_di["valinnanvara"]  # Määrittää miten monta kenttää tarjotaan per vuoro
 
+vuorot = 30
+player_nimi = "Rahtifirma"
+
 # Pelin aloitus
 flight_lib.clear()
 print(flight_art.StartScreen.picture + "\n")
@@ -53,20 +55,24 @@ print(flight_art.StartScreen.title)
 
 input(" paina [ENTER]")
 
-print("\n\n Tervetuloa rahtilento yrittäjäksi! ")
-print("Aloitat Helsinki-Vantaalta omalla rahtikoneellasi. Valitse reittisi, kuljeta lastia ja kasvata varallisuuttasi. ")
-print("Päivitä konettasi kantaman, lastikapasiteetin ja tuottojen parantamiseksi. ")
-print("Muista, että aikasi on rajallinen – tee fiksuja valintoja ja maksimoi voitot ennen pelin päättymistä. ")
-print("Oletko valmis nousemaan ilmaan? ")
-print(" kirjoita help saadaksesi listan komennoista kun peli on alkanut\n")
-input(" paina [ENTER]")
-print("")
+print("""
+ Tervetuloa rahtilento yrittäjäksi!
+ Aloitat Helsinki-Vantaalta omalla rahtikoneellasi. Valitse reittisi,
+ kuljeta lastia ja kasvata varallisuuttasi. Päivitä konettasi kantaman, 
+ lastikapasiteetin ja tuottojen parantamiseksi. Muista, että aikasi on 
+ rajallinen - tee fiksuja valintoja ja maksimoi voitot ennen pelin 
+ päättymistä. 
+
+ Oletko valmis nousemaan ilmaan? 
+ kirjoita help saadaksesi listan komennoista kun peli on alkanut
+ """)
+nimitys = input("Nimeä yrityksesi \n> ")
+if len(nimitys.strip()) > 0:
+    player_nimi = nimitys
 
 suunta_valittu = False
 event = False
 animaatio = False
-vuorot = 30
-player_nimi = "Rahtifirma"
 
 ### Pelin "main" loop tässä
 while vuorot > 0: 
@@ -74,7 +80,7 @@ while vuorot > 0:
     flight_lib.clear()
     
     # Animaatio
-    if animaatio == True and suunta_valittu == False:
+    if animaatio == True:
         flight_lib.animaatio()
     animaatio = False
 
@@ -116,7 +122,7 @@ x--------------------------------------------------------x"""
             liike_lista_str = ""
             target_lista = []
             # Liike_lista_str ensimmäiset rivit
-            liike_lista_str = f" - Palkkio - ICAO ---- Lentokentän nimi -------== KEIKAT ==-------\n"
+            liike_lista_str = f" - Palkkio - ICAO --- Lentokentän nimi -----------------\n"
             for kentta in liike_lista:
                 # kentta_stats tallennetaan musitiin uudelleenkäyttöä varten
                 target_lista.append((kentta["lat"], kentta["long"]))
@@ -125,7 +131,7 @@ x--------------------------------------------------------x"""
                 if kentta["type"]=="large_airport":
                     base_reward = 3500
 
-                # Tämä tulisi siirtää kirjastoon
+                # Reward
                 etaisyys = distance.distance(sijainti["deg"],(kentta["lat"],kentta["long"])).km
 
                 kentta["reward"] = flight_lib.reward(kentta["iso_country"], kentta["ident"], etaisyys, visited_ident, base_reward, lentokone_di)
@@ -133,7 +139,7 @@ x--------------------------------------------------------x"""
                 # Liike_lista_str tallennetaan muistiin
                 liike_lista_str += (f"{Color.fg.lightcyan}{kentta["id"]}{Color.reset} | "
                 f"{Color.fg.green}{(str(int(kentta["reward"])) + "€").ljust(7)}{Color.reset}| {kentta["ident"].ljust(7)}|"
-                f"  {kentta["name"].ljust(30)[:30]} | {(str(int(etaisyys))+"km").ljust(7)}| {kentta["iso_country"]}  {kentta["type"]}{"\n"}")
+                f" {kentta["name"].ljust(30)[:30]} | {kentta["iso_country"]}\n") # etäisyys {(str(int(etaisyys))+"km").ljust(7)}|
 
             print(header_pompt)
             print(flight_lib.eu_map_marked(sijainti["deg"][1],sijainti["deg"][0],target_lista),end="")
@@ -170,7 +176,8 @@ x--------------------------------------------------------x"""
 
         #Komento jolla koneen päivitys onnistuu
         elif komento.upper() == "UPGRADE":
-                print("Koneet ja niiden ominaisuudet.")
+                flight_lib.clear()
+                print("\nKoneet ja niiden ominaisuudet.")
                 koneet = f"""x------------------------------------------------------------------------------------------x
 |   1. Kone = Tyyppi: Stor Dam 23 / Kantama: 450 / Kerroin: 1.4 / Hinta: 25 000 €          |
 |   2. Kone = Tyyppi: Nanny 24 / Kantama: 650 / Kerroin: 1.6 / Hinta: 60 000 €             |
@@ -181,15 +188,14 @@ x-------------------------------------------------------------------------------
                 print("Valitse haluamasi päivitys numerolla [1 / 2 / 3].")
                 valinta = input("> ")
 
-                paivitys = flight_lib.upgrade_airplane(raha, valinta, lentokone_di)
-                if paivitys == None:
-                    event == False
-                else:
+                paivitys = flight_lib.upgrade_airplane_md(raha, valinta, lentokone_di)
+                if paivitys != None:
                     lentokone_di, raha = paivitys[0], paivitys[1]
                     kantama = lentokone_di["kantama"]
                     valinnanvara = lentokone_di["valinnanvara"]
-                jatkuu = True
 
+                event = False
+                jatkuu = True
 
         # Tässä show komento, joka näyttää lentokentän sijainnin kartalla
         elif komento_args[0].upper() == "SHOW":

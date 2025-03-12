@@ -205,8 +205,14 @@ def eu_map_marked(long, lat, targets = None):
 
 #Päivitykset, kesken!!!!!
 def upgrade_airplane_md(raha, valinta, lentokone_di):
-    sql = f"select type, distance, selection, price, factor from airplane where id = '{float(valinta)+1}'"
-    kursori.execute(sql)
+    try:
+        sql = f"select type, distance, selection, price, factor from airplane where id = '{float(valinta)+1}'"
+        kursori.execute(sql)
+    except ValueError:
+        print("Valintaa ei tehty")
+        input("Paina [ENTER] jatkaaksesi peliä.")
+        return None
+
     tiedot = kursori.fetchall()
 
     for arvo in tiedot:
@@ -226,48 +232,8 @@ def upgrade_airplane_md(raha, valinta, lentokone_di):
                 return None
         elif valinta in "123" and len(valinta) == 1:
             print("Rahasi ei riittänyt!")
-            input("Paina ENTER jatkaaksesi peliä.")
-
-        return None
-
-
-
-def upgrade_airplane(raha, valinta, lentokone_di):
-    if valinta == "1" and raha >= 200000:
-            if lentokone_di["tyyppi"] != "Stor Dam 23":
-                paivitys = {
-                    "tyyppi": "Stor Dam 23", 
-                    "kantama": 600, 
-                    "kerroin": 1.4, 
-                    "hinta": 200000,
-                    "valinnanvara" : 6}
-                vahennys = raha - paivitys["hinta"]
-                return paivitys, vahennys
-    elif valinta == "2" and raha >= 1000000:
-            if lentokone_di["tyyppi"] != "Nanny 24":
-                paivitys = {
-                    "tyyppi": "Nanny 24", 
-                    "kantama": 1400, 
-                    "kerroin": 1.6, 
-                    "hinta": 1000000,
-                    "valinnanvara" : 7}
-                vahennys = raha - paivitys["hinta"]
-                return paivitys, vahennys
-    elif valinta == "3" and raha >= 1500000:
-            if lentokone_di["tyyppi"] != "Mamma Birgitta 25":
-                paivitys = {
-                    "tyyppi": "Mamma Birgitta 25", 
-                    "kantama": 2000, 
-                    "kerroin": 2, 
-                    "hinta": 1500000,
-                    "valinnanvara" : 8}
-                vahennys = raha - paivitys["hinta"]
-                return paivitys, vahennys
-    elif valinta in "123" and len(valinta) == 1:
-        print("raha ei riitä")
-        input("")
-
-    return None
+            input("Paina [ENTER] jatkaaksesi peliä.")
+            return None
 
 
 #random eventti
@@ -275,10 +241,13 @@ def upgrade_airplane(raha, valinta, lentokone_di):
 # [1] :  päivitetty rahan arvo
 def random_event(raha):
     if random.random() < 0.3:
-        random_juttu = random.randint(0, 3)
-        if random_juttu == 0:
-            # MENETYS
-            vahennys = random.uniform(3000, 12000)
+        random_juttu = random.randint(1, 3)
+        if random_juttu == 1:
+            # Tappio
+
+            vahennys = random.uniform(1000, raha / 2)
+            if vahennys < 0:
+                return None
             raha -= vahennys
 
             tulos_str = f"""{Color.fg.red}{flight_art.Money.euro}{Color.reset}
@@ -289,9 +258,10 @@ def random_event(raha):
 
             return tulos_str, raha
 
-        elif random_juttu == 1:
-            # ANSIO
-            bonus = random.uniform(1000,9000)
+        elif random_juttu == 2:
+            # Menestys
+
+            bonus = random.uniform(1000, raha / 2.5)
             raha += bonus
 
             tulos_str = f"""{Color.fg.green}{flight_art.Money.euro}{Color.reset}
@@ -301,19 +271,36 @@ def random_event(raha):
     tienasit ylimääräistä: {int(bonus)} €\n"""
             return tulos_str, raha
 
-        # ToDo: riskikeikka
         elif random_juttu == 3:
-            kysy = input(" Haluatko ottaa epäilyttävän kuorman? (K/E): ").strip().lower()
-            if kysy == "K":
-                on_success = random.choice([True, False])
+            # Riskikeikka
+
+            on_success = random.choice((True, False))
+            palkkio = int(random.uniform(6000, 30000))
+
+            print(f"""{Color.fg.yellow}{flight_art.Money.huuto}{Color.reset}
+    {Color.fg.black}{Color.bg.blue}Riskikäs lasti{Color.reset}
+    Sait mahdollisuuden tienata {palkkio}€, mutta huonolla tuurilla 
+    voit tienaamisen sijaan menettää {palkkio}€""")
+    
+            kysy = input("    Haluatko ottaa epäilyttävän kuorman? [Y/N] ")
+            if kysy.upper() == "Y":
+                clear()
+                animaatio()
                 if on_success:
-                    palkkio = 20000
+                    # Riskikeikka menestys
                     raha += palkkio
 
-                    tulos_str = f"""   
-                    
-{Color.bg.yellow}Riskialtis lasti!{Color.reset}
- Otit riskialitsta lastia ja se kannatti tienasit: {palkkio} €\n"""
+                    tulos_str = f"""{Color.fg.green}{flight_art.Money.euro}{Color.reset}
+    {Color.fg.black}{Color.bg.green}Menestys!{Color.reset}
+    Kuljetit riskikkään lastin ja se kannatti. 
+    Tienasit {palkkio}€!\n"""
+                    return tulos_str, raha
+                else:
+                    # Riskikeikka tappio
+                    raha -= palkkio
+                    tulos_str = f"""
+    {Color.fg.black}{Color.bg.red}Tappio!{Color.reset}
+    Jäit kiinni! Menetit {palkkio}€!\n"""
                     return tulos_str, raha
     else:
         return None
@@ -323,11 +310,11 @@ def clear(ammount = 200):
     for _ in range(ammount):
         sys.stdout.write("\x1b[1A\x1b[2K")
 
-def animaatio():
+def animaatio(length = 13):
     print("\n                      ----- Matkalla -----")
     animaatio_str = flight_art.Animation.list
 
-    for i in range(13):
+    for i in range(length):
         print(animaatio_str[i % len(animaatio_str)])
         clear(26)
         sleep(0.08)
@@ -353,6 +340,7 @@ def reward(country, ident, etaisyys, visited_ident, base_reward, lentokone_di):
     if ident in visited_ident:
         base_reward = base_reward / 2
 
-    return ((base_reward * float(lentokone_di["kerroin"])) + etaisyys_raha) * random.uniform(0.9,1.1) * country_reward
+    return (((base_reward * float(lentokone_di["kerroin"])) + etaisyys_raha) 
+            * random.uniform(0.9,1.1) * country_reward)
 
 
