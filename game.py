@@ -11,7 +11,7 @@ from flight_art import Color
 yhteys = mysql.connector.connect (
     host='127.0.0.1',
     port= 3306,
-    database='rahtipeli',
+    database='flight_game',
     user='pythonuser',  # HUOM käyttäjä: pythonuser
     password='salainen-sana',  #HUOM salasana
     autocommit=True,
@@ -64,7 +64,7 @@ print("""
  rajallinen - tee fiksuja valintoja ja maksimoi voitot ennen pelin 
  päättymistä. 
 
- Oletko valmis nousemaan ilmaan? 
+ Oletko valmis nousemaan ilmaan?
  kirjoita help saadaksesi listan komennoista kun peli on alkanut
  """)
 nimitys = input("Nimeä yrityksesi \n> ")
@@ -118,7 +118,7 @@ x--------------------------------------------------------x"""
         print("Valitse suunta [N/W/S/E]")
     else:
         # Kutsutaan liike_lista funktio, joka palauttaa mahdolliset keikat
-        liike_lista = flight_lib.find_ports(sijainti["ident"],int(kantama),valinnanvara,suunta, lentokone_di)
+        liike_lista = flight_lib.find_ports(sijainti["ident"],int(kantama),valinnanvara, suunta, lentokone_di)
         if liike_lista != False:
             liike_lista_str = ""
             target_lista = []
@@ -127,10 +127,13 @@ x--------------------------------------------------------x"""
             for kentta in liike_lista:
                 # kentta_stats tallennetaan musitiin uudelleenkäyttöä varten
                 target_lista.append((kentta["lat"], kentta["long"]))
+
                 if kentta["type"]=="medium_airport":
                     base_reward = 2000
                 if kentta["type"]=="large_airport":
                     base_reward = 3500
+
+
 
                 # Reward
                 etaisyys = distance.distance(sijainti["deg"],(kentta["lat"],kentta["long"])).km

@@ -14,7 +14,7 @@ from time import sleep
 yhteys = mysql.connector.connect (
     host='127.0.0.1',
     port= 3306,
-    database='rahtipeli',
+    database='flight_game',
     user='pythonuser',  # HUOM käyttäjä: pythonuser
     password='salainen-sana',  #HUOM salasana
     autocommit=True,
@@ -37,7 +37,7 @@ def find_ports(sij, kant, valvara, suunta, lentokone_di):
                 " longitude_deg FROM airport WHERE type='large_airport'")
     else:
         sql = (f"SELECT ident, name, type, iso_country, latitude_deg,"
-                " longitude_deg FROM airport WHERE NOT type='small_airport'")
+                " longitude_deg FROM airport WHERE not type='small_airport' and not type='closed' and not type='heliport'")
     kursori.execute(sql)
     airports = kursori.fetchall()
 
