@@ -174,9 +174,9 @@ x--------------------------------------------------------x"""
         if komento.upper() == "HELP":
             # tähän listätään kaikki komennot, kun ne on keksitty
             print("[Q]: Poistu")
-            print("SHOW icao: näyttää haluamasi lentokentän sijainnin kartalla. Esim. EDDB")
-            print("PROMPT: Näyttää kartan, statsit ja keikat uudestaan")
-            print("UPGRADE: Osta uusi lentokone.")
+            print("[SHOW] icao: näyttää haluamasi lentokentän sijainnin \nkartalla. Esim. EDDB")
+            print("[PROMPT]: Näyttää kartan, statsit ja keikat uudestaan")
+            print("[UPGRADE]: Osta uusi lentokone.")
 
         #Komento jolla koneen päivitys onnistuu
         elif komento.upper() == "UPGRADE":
@@ -208,6 +208,7 @@ x-------------------------------------------------------------------------------
                 sql = f"SELECT longitude_deg, latitude_deg, name FROM airport WHERE ident='{show_ident}'"
                 kursori.execute(sql)
                 show_ident = kursori.fetchone()
+                flight_lib.clear()
                 try:
                     print(flight_lib.eu_map_marked(show_ident[0], show_ident[1]))
                     print("Näytillä:",show_ident[2])
@@ -218,14 +219,15 @@ x-------------------------------------------------------------------------------
 
         # Prompt-komento näyttää kartan ja statsit uudestaan
         elif komento.upper() == "PROMPT":
-            
-            
+            flight_lib.clear()
             if suunta_valittu == True:
+                print(header_pompt)
                 print(flight_lib.eu_map_marked(sijainti["deg"][1], sijainti["deg"][0], target_lista), end="")
                 print(stats_prompt)
                 print(liike_lista_str)
                 print("Valitse keikka antamalla kohteen numero")
             else:
+                print(header_pompt)
                 print(flight_lib.eu_map_marked(sijainti["deg"][1], sijainti["deg"][0]), end="")
                 print(stats_prompt)
                 print("Valitse suunta [N/W/S/E]")
